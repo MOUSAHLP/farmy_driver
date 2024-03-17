@@ -3,19 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements JWTSubject
+class Driver extends Authenticatable implements JWTSubject
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles,SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable , HasRoles;
 
-    protected $table = "users";
 
     protected $fillable = [
         'first_name',
@@ -24,14 +21,11 @@ class User extends Authenticatable implements JWTSubject
         'password',
         'address',
         'phone',
-        'role_id',
         'status',
         'fcm_token',
         'city_id',
         'latitude',
-        'longitude',
-        'birthday',
-        'delete_reason',
+        'longitude'
     ];
 
 
@@ -46,10 +40,6 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->getKey();
     }
-    public function role()
-    {
-        return $this->belongsTo(Role::class, 'role_id')->select(['id', 'name']);
-    }
 
     public function getJWTCustomClaims()
     {
@@ -59,14 +49,6 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->first_name . ' ' . $this->last_name;
     }
-    public function addresses()
-    {
-        return $this->hasMany(UserAddress::class);
-    }
-    public function state()
-    {
-        return $this->belongsTo(State::class);
-    }
     public function city()
     {
         return $this->belongsTo(City::class);
@@ -75,13 +57,4 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->morphMany(Notification::class, 'notifiable');
     }
-    public function orders()
-    {
-        return $this->hasMany(Order::class);
-    }
-
-        public function favorites()
-        {
-            return $this->hasMany(Favorit::class);
-        }
 }
