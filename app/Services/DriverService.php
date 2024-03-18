@@ -15,6 +15,7 @@ use Carbon\Carbon;
  
  
  
+ 
 
 
 class DriverService
@@ -26,7 +27,7 @@ class DriverService
 
         $dues = Order::where('driver_id', $driver_id)->sum('delivery_fee');
 
-        $orders = Order::where('driver_id', $driver_id)->orderBy('created_at' , 'Desc')->take(5)->select('order_number' , 'created_at' , 'total')->get();
+        $orders = Order::where([['driver_id', $driver_id],['status' , OrderStatus::Deliverd]])->orderBy('created_at' , 'Desc')->take(5)->select('order_number' , 'created_at' , 'total')->get();
         return  ['driver_dues' => $dues , 'orders'=> $orders];
     }
 
@@ -95,6 +96,28 @@ class DriverService
             return $res;
         }
 
+
+    }
+
+    public function getLastFiveOrdersNotDeliverd($driver_id){
+
+        $orders = Order::where( 'driver_id', $driver_id)->whereNot('status' , OrderStatus::Deliverd)->orderBy('created_at' , 'Desc')->take(5)->with('userAddress')->get();
+
+        $data =  $orders->map(function($order){
+
+            return [
+
+                'order_number'=> $order->order_number ,
+                'location'=> $order->userAddress ? $order->userAddress->address : null ,
+                'status'=> $order->status ,
+                'date'=>  Carbon::parse($order->created_at)->format('d/m/y') ,
+                'time'=>  Carbon::parse($order->created_at)->format('H:i') ,
+              
+            ];
+
+
+        });
+        return $data ;
 
     }
 }

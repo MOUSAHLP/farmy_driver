@@ -87,6 +87,17 @@ class DriverController extends Controller
 
     }
 
+    public function getLastFiveOrdersNotDeliverd($driver_id){
+
+        $data = $this->driverService->getLastFiveOrdersNotDeliverd($driver_id);
+
+          return $this->successResponse(
+            $data,
+            'dataFetchedSuccessfully'
+        );
+
+    }
+
 }
 
      
