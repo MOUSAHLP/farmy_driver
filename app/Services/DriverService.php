@@ -5,7 +5,16 @@ namespace App\Services;
 use App\Enums\OrderStatus;
 use App\Models\Order;
 use App\Models\Driver ;
-use Spatie\LaravelPdf\Facades\Pdf;
+ 
+ 
+use Spatie\Browsershot\Browsershot;
+use PDF;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
+ 
+ 
+ 
 
 
 class DriverService
@@ -43,14 +52,28 @@ class DriverService
     public function generatePdfAllOrdersForDriver($driver_id)
     {
 
-        $orders = Order::where('driver_id' ,$driver_id )->orderBy('created_at' , "desc")->select('id', 'order_number')->get();
+        $time = now();
+        $orders = Order::where('driver_id' ,$driver_id )->orderBy('created_at' , "desc")->select('order_number' ,'created_at' , 'total')->get()->toArray();
+      
+        $pdf = PDF::loadView('inv' , ['data'=>$orders]);
+        // $repository = 'storage/app/public/ordesPdf'; //comment this line for 000webhost
+        // if (!File::exists($repository)) {
+        //     File::makeDirectory($repository, 0777, true);
+        // }
+        // $fileName = 'orders.pdf';
 
         
-        return Pdf::view('invoice', ['data' => $orders])
 
-        ->format('a4')
+       Storage::put('public/pdf/'.$time.'.pdf', $pdf->output());
 
-        ->save('your-invoice.pdf');
+       return $pdf->download('invoice.pdf');
+        
+
+        // $filePath = $repository . Carbon::now()->format('Y_m_d_u') . '_' . $fileName;
+
+        // $pdf->
+        // // return $pdf->download( $filePath);
+
     }
 
     public function updateDriverInfo($driver_id , $data){

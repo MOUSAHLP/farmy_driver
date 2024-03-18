@@ -53,10 +53,12 @@ class DriverController extends Controller
     public function generatePdfAllOrdersForDriver($driver_id){
 
         $pdf = $this->driverService->generatePdfAllOrdersForDriver($driver_id);
-        return $this->successResponse(
-            $pdf,
-            'dataFetchedSuccessfully'
-        );
+
+        return $pdf ;
+        // return $this->successResponse(
+        //     $pdf,
+        //     'dataFetchedSuccessfully'
+        // );
     }
 
     public function updateDriverInfo($driver_id , Request $request){
@@ -76,7 +78,7 @@ class DriverController extends Controller
                 null,
                 $res['message']
              );
-             
+
         }else{
 
             return $this->errorResponse(

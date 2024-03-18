@@ -3,8 +3,9 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>Invoice</title>
+    
 </head>
 
 <body>
@@ -14,16 +15,24 @@
     <table>
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Order Nb</th>
+                <br/>
+                <th>Date</th>
+                <br/>
+                <th>Total</th>
+
                 <!-- Add more columns as needed -->
             </tr>
         </thead>
         <tbody>
             @foreach ($data as $item)
             <tr>
-                <td>{{ $item->id }}</td>
-                <td>{{ $item->order_number }}</td>
+                <td>{{ $item['order_number'] }}</td>
+                <br/>
+                <td>{{  date('Y-m-d', strtotime( $item['created_at'] ))  }}</td>
+                <br/>
+                <td>{{ $item['total'] }}</td>
+
                 <!-- Display other data fields -->
             </tr>
             @endforeach

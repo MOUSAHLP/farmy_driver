@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
+use Barryvdh\DomPDF\Facade\PDF   ;
 
 return [
 
@@ -169,6 +170,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Krlove\EloquentModelGenerator\Provider\GeneratorServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
         
     ])->toArray(),
 
@@ -183,8 +185,13 @@ return [
     |
     */
 
-    'aliases' => Facade::defaultAliases()->merge([
+     
+    
+    'aliases' =>  
+    
+   Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
+        'PDF' => PDF::class,
     ])->toArray(),
 
 ];
