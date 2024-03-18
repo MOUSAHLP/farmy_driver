@@ -8,10 +8,11 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Database\Eloquent\Model;
 
-class Driver extends Authenticatable implements JWTSubject
+class Driver extends Model //extends Authenticatable implements JWTSubject
 {
-    use HasApiTokens, HasFactory, Notifiable , HasRoles;
+    use HasApiTokens, HasFactory, Notifiable /* , HasRoles*/;
 
 
     protected $fillable = [
@@ -36,15 +37,15 @@ class Driver extends Authenticatable implements JWTSubject
         'deleted_at',
     ];
 
-    public function getJWTIdentifier()
-    {
-        return $this->getKey();
-    }
+    // public function getJWTIdentifier()
+    // {
+    //     return $this->getKey();
+    // }
 
-    public function getJWTCustomClaims()
-    {
-        return [];
-    }
+    // public function getJWTCustomClaims()
+    // {
+    //     return [];
+    // }
     public function getUserNameAttribute()
     {
         return $this->first_name . ' ' . $this->last_name;

@@ -16,12 +16,6 @@ class DriverController extends Controller
     }
 
 
-    
-
-    
-   
-
-
     public function getDriverDues($driver_id)
     {
 
@@ -33,4 +27,64 @@ class DriverController extends Controller
         );
 
     }
+
+
+    public function acceptOrderByDriver($order_id , $driver_id){
+
+        $res = $this->driverService->acceptOrderByDriver($order_id , $driver_id);
+
+        if($res['status']){
+
+            return $this->successResponse(
+                null,
+                $res['message']
+             );
+
+
+        }else{
+
+            return $this->errorResponse(
+            $res['message'] , 404 );
+        }
+      
+    }
+
+
+    public function generatePdfAllOrdersForDriver($driver_id){
+
+        $pdf = $this->driverService->generatePdfAllOrdersForDriver($driver_id);
+        return $this->successResponse(
+            $pdf,
+            'dataFetchedSuccessfully'
+        );
+    }
+
+    public function updateDriverInfo($driver_id , Request $request){
+
+
+      
+        $validatedData = $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+        ]);
+
+        $res = $this->driverService->updateDriverInfo($driver_id ,$request->all());
+
+        if($res['status']){
+
+            return $this->successResponse(
+                null,
+                $res['message']
+             );
+             
+        }else{
+
+            return $this->errorResponse(
+            $res['message'] , 404 );
+        }
+
+    }
+
 }
+
+     
