@@ -8,7 +8,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use App\Helpers\AuthHelper;
 use App\Models\User;
 use App\Enums\MediaCollectionsNames;
-
+use Carbon\Carbon;
 
 class OrderResource extends JsonResource
 {
@@ -16,8 +16,7 @@ class OrderResource extends JsonResource
     {
         $actionMethod = $request->route()->getActionMethod();
         return match ($actionMethod) {
-            'index' => $this->getAllResource(),
-            'getUserAllInvoices' => $this->getUserAllInvoicesResource(),
+            'getDriverOrders' => $this->getgetDriverOrdersResource(),
             default => $this->defaultResource(),
         };
     }
@@ -63,46 +62,26 @@ class OrderResource extends JsonResource
             'invoice' => $this->invoice
         ];
     }
-
-    // public function productResource($product)
-    // {
-    //     $is_favorite = false;
-    //     if (isset(AuthHelper::userAuth()->id)) {
-    //         $user_favorites = User::where('id', AuthHelper::userAuth()->id)->with("favorites")->get()->pluck("favorites")->first();
-    //         foreach ($user_favorites as $favorite) {
-    //             if ($favorite->product_id == $product->id) {
-    //                 $is_favorite = true;
-    //                 break;
-    //             }
-    //         }
-    //     }
-    //     return [
-    //         'id'               => $product->id,
-    //         'name'             => $product->name,
-    //         'description'      => $product->description,
-    //         'price'            => $product->price,
-    //         'tax'              => $product->tax,
-    //         'slug'             => $product->slug,
-    //         'quantity'         => $product->quantity,
-    //         'status'           => $product->status,
-    //         'availability'     => $product->availability,
-    //         'is_favorite'       => $is_favorite,
-    //         'seller'           => $product->seller?->only('id', 'name'),
-    //         'subcategory'      => $product->subCategory?->only('id', 'name'),
-    //         'category'         => $product->subCategory?->category->only('id', 'name'),
-    //         'discount'         => $product->discount,
-    //         'discount_status'  => $product->discount_status,
-    //         'product_source'   => $product->product_source,
-    //         'commission'       => $product->commission?->only('id', 'name') + ['commission_value' => $product->commission_value],
-    //         'created_at'       => $product->created_at,
-    //         'image'      => $product->getFirstMediaUrl(MediaCollectionsNames::ProductImage),
-    //         'attributes' => $product->attributes->map(function ($attribute) {
-    //             return [
-    //                 'id' => $attribute->id,
-    //                 'name' => $attribute->name,
-    //                 'value' =>  $attribute->pivot->value,
-    //             ];
-    //         }),
-    //     ];
-    // }
+    public function getgetDriverOrdersResource()
+    {
+        return [
+            'id' => $this->id,
+            'order_number' => $this->order_number,
+            'user_phone' => $this->user->phone,
+            'status' => OrderStatus::getName($this->status),
+            'order_time' => $this->getdate($this),
+            'user_address' => $this->userAddress,
+            'city' => ($this->city_id ? $this->city : null),
+            'start_time' => $this->start_time,
+            'end_time' => $this->end_time,
+        ];
+    }
+    public function getdate($order)
+    {
+        if($order->start_time != null){
+            return $order->start_time;
+        }else{
+            return Carbon::createFromFormat('H:i:s', $order->created_at,'UTC');
+        }
+    }
 }

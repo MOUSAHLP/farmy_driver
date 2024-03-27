@@ -85,9 +85,9 @@ $res = $this->driverService->updateDriverInfo($driver_id, $request->all());
         );
     }
 
-    public function getDriverOrders($driver_id)
+    public function getDriverOrders()
     {
-        $data = $this->driverService->getDriverOrders($driver_id);
+        $data = $this->driverService->getDriverOrders();
 
         return $this->successResponse(
             $data,

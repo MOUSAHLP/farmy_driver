@@ -6,7 +6,7 @@ use App\Enums\OrderStatus;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\Driver ;
-
+use App\Helpers\AuthHelper;
 
 use PDF;
 use Illuminate\Support\Facades\File;
@@ -110,7 +110,9 @@ class DriverService
         return $data ;
 
     }
-    public function getDriverOrders($driver_id){
+    public function getDriverOrders(){
+        $driver_id = AuthHelper::userAuth()->id;
+
         $orders = Order::where([['driver_id', $driver_id],['status' ,[ OrderStatus::Confirmed,OrderStatus::OnDelivery]]])
         ->orderBy('created_at' , 'Desc')
         ->get();

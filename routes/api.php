@@ -5,12 +5,17 @@ use App\Http\Controllers\DriverController;
 use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
+// auth
+Route::post('/login', [AuthController::class, 'login']);
 
-route::post('/login', [AuthController::class, 'login']);
-route::get('/setting', [SettingController::class, 'getAppSettings']);
-route::get('/driver-dues/{driver_id}', [DriverController::class, 'getDriverDues']);
-route::get('/generate-pdf-all-orders/{driver_id}' , [DriverController::class, 'generatePdfAllOrdersForDriver']);
-route::get('/accept-order/{order_id}/{driver_id}' , [DriverController::class , 'acceptOrderByDriver']);
-route::put('/update-driver-info/{driver_id}' , [DriverController::class , 'updateDriverInfo']);
-route::get('/orders' , [DriverController::class , 'getLastFiveOrdersNotDeliverd']);
-route::get('/orders/{driver_id}' , [DriverController::class , 'getDriverOrders']);
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::get('/driver-dues/{driver_id}', [DriverController::class, 'getDriverDues']);
+    Route::get('/generate-pdf-all-orders/{driver_id}' , [DriverController::class, 'generatePdfAllOrdersForDriver']);
+    Route::get('/accept-order/{order_id}/{driver_id}' , [DriverController::class , 'acceptOrderByDriver']);
+    Route::put('/update-driver-info/{driver_id}' , [DriverController::class , 'updateDriverInfo']);
+
+    Route::get('/orders' , [DriverController::class , 'getLastFiveOrdersNotDeliverd']);
+    Route::get('/driver-orders' , [DriverController::class , 'getDriverOrders']);
+});
+
+Route::get('/setting', [SettingController::class, 'getAppSettings']);
