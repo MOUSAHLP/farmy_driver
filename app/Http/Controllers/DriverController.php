@@ -23,31 +23,27 @@ class DriverController extends Controller
         );
     }
 
-    public function acceptOrderByDriver(Request $request, $order_id, $driver_id)
+    public function acceptOrderByDriver($order_id)
     {
 
-
-        if (Driver::where("id", $driver_id)->exists()) {
+        $order = Order::find($order_id);
+        if (!$order) {
             return $this->errorResponse(
-                "NotFound",
+                "orders.NotFound",
                 404
             );
         }
 
-        $order = Order::find($order_id);
-
-        $res = $this->driverService->acceptOrderByDriver($order, $driver_id);
+        $res = $this->driverService->acceptOrderByDriver($order);
 
         if ($res) {
-
             return $this->successResponse(
                 null,
-                'dataUpdatedSuccessfully'
+                'orders.Accepted'
             );
         } else {
-
             return $this->errorResponse(
-                "NotFound",
+                "orders.Already_Accepted",
                 404
             );
         }

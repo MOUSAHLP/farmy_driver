@@ -31,12 +31,21 @@ return [
 
     //users
     "users" => [
-        "NotFound"=> "المستخدم غير موجودة",
+        "NotFound" => "المستخدم غير موجودة",
     ],
 
+
+    //orders
+    "orders" => [
+        "NotFound" => "الطلب غير موجودة",
+        "Accepted" => "تم قبول الطلب",
+        "Already_Accepted" => "الطلب تم قبوله مسبقا",
+    ],
+
+
     //coupons
-      "coupons" => [
-        "NoEnoughPoints"=> "النقاط غير كافية",
+    "coupons" => [
+        "NoEnoughPoints" => "النقاط غير كافية",
     ],
 
     // Achievements
@@ -44,7 +53,7 @@ return [
 
     // Ranks
     "Ranks" => [
-        "NotFound"=> "الرتبة غير موجودة",
+        "NotFound" => "الرتبة غير موجودة",
     ],
 
     //Auth msgs

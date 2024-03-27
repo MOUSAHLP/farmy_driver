@@ -6,11 +6,9 @@ use App\Enums\OrderStatus;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\Driver;
-use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
-use PDF;
+use Spatie\LaravelPdf\Facades\Pdf as FacadesPdf;
 
 class DriverService
 {
@@ -25,11 +23,11 @@ class DriverService
         return  ['driver_dues' => $dues, 'orders' => $orders];
     }
 
-    public function acceptOrderByDriver($order, $driver_id)
+    public function acceptOrderByDriver($order)
     {
         if ($order->driver_id == null && $order->status == OrderStatus::Pending) {
 
-            $order->driver_id = $driver_id;
+            $order->driver_id = auth()->user()->id;
             $order->status =  OrderStatus::Confirmed;
             $order->save();
 
@@ -45,7 +43,7 @@ class DriverService
         $time = now();
         $orders = Order::where('driver_id', $driver_id)->orderBy('created_at', "desc")->select('order_number', 'created_at', 'total')->get()->toArray();
 
-        $pdf = PDF::loadView('inv', ['data' => $orders]);
+        $pdf = FacadesPdf::loadView('inv', ['data' => $orders]);
         // $repository = 'storage/app/public/ordesPdf'; //comment this line for 000webhost
         // if (!File::exists($repository)) {
         //     File::makeDirectory($repository, 0777, true);
