@@ -31,12 +31,19 @@ return [
 
     //users
     "users" => [
-        "NotFound" =>"User Not Found",
+        "NotFound" => "User Not Found",
+    ],
+
+    //orders
+    "orders" => [
+        "NotFound" => "Order Not Found",
+        "Accepted" => "Order is Accepted",
+        "Already_Accepted" => "The Order Has Already Been Accepted",
     ],
 
     //coupons
     "coupons" => [
-        "NoEnoughPoints"=> "No Enough Points",
+        "NoEnoughPoints" => "No Enough Points",
     ],
     // Achievements
     "achievementAlreadyDone" => "Achievement Already Done",

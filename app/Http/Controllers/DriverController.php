@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Driver;
+use App\Models\Order;
 use App\Http\Requests\DriverRequest;
 use App\Services\DriverService;
 use Illuminate\Http\Request;
@@ -21,20 +23,27 @@ class DriverController extends Controller
         );
     }
 
-    public function acceptOrderByDriver($order_id, $driver_id)
+    public function acceptOrderByDriver($order_id)
     {
-        $res = $this->driverService->acceptOrderByDriver($order_id, $driver_id);
 
-        if ($res['status']) {
+        $order = Order::find($order_id);
+        if (!$order) {
+            return $this->errorResponse(
+                "orders.NotFound",
+                404
+            );
+        }
 
+        $res = $this->driverService->acceptOrderByDriver($order);
+
+        if ($res) {
             return $this->successResponse(
                 null,
-                $res['message']
+                'orders.Accepted'
             );
         } else {
-
             return $this->errorResponse(
-                $res['message'],
+                "orders.Already_Accepted",
                 404
             );
         }
@@ -59,7 +68,7 @@ class DriverController extends Controller
         //     'first_name' => 'required|string|max:255',
         //     'last_name' => 'required|string|max:255',
         // ]);
-$res = $this->driverService->updateDriverInfo($driver_id, $request->all());
+        $res = $this->driverService->updateDriverInfo($driver_id, $request->all());
 
         if ($res['status']) {
             return $this->successResponse(
@@ -74,10 +83,9 @@ $res = $this->driverService->updateDriverInfo($driver_id, $request->all());
         }
     }
 
-    public function getLastFiveOrdersNotDeliverd($driver_id)
+    public function getLastFiveOrdersPending()
     {
-
-        $data = $this->driverService->getLastFiveOrdersNotDeliverd($driver_id);
+        $data = $this->driverService->getLastFiveOrdersPending();
 
         return $this->successResponse(
             $data,
