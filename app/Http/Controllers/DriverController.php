@@ -2,102 +2,96 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DriverRequest;
 use App\Services\DriverService;
 use Illuminate\Http\Request;
 
 class DriverController extends Controller
 {
-    //
-
     public function __construct(private DriverService $driverService)
     {
-
-
     }
-
 
     public function getDriverDues($driver_id)
     {
-
-
         $driverDues = $this->driverService->getDriverDues($driver_id);
         return $this->successResponse(
             $driverDues,
             'dataFetchedSuccessfully'
         );
-
     }
 
+    public function acceptOrderByDriver($order_id, $driver_id)
+    {
+        $res = $this->driverService->acceptOrderByDriver($order_id, $driver_id);
 
-    public function acceptOrderByDriver($order_id , $driver_id){
-
-        $res = $this->driverService->acceptOrderByDriver($order_id , $driver_id);
-
-        if($res['status']){
+        if ($res['status']) {
 
             return $this->successResponse(
                 null,
                 $res['message']
-             );
-
-
-        }else{
+            );
+        } else {
 
             return $this->errorResponse(
-            $res['message'] , 404 );
+                $res['message'],
+                404
+            );
         }
-      
     }
 
 
-    public function generatePdfAllOrdersForDriver($driver_id){
+    public function generatePdfAllOrdersForDriver($driver_id)
+    {
 
         $pdf = $this->driverService->generatePdfAllOrdersForDriver($driver_id);
 
-        return $pdf ;
+        return $pdf;
         // return $this->successResponse(
         //     $pdf,
         //     'dataFetchedSuccessfully'
         // );
     }
 
-    public function updateDriverInfo($driver_id , Request $request){
+    public function updateDriverInfo($driver_id, DriverRequest $request)
+    {
+        // $validatedData = $request->validate([
+        //     'first_name' => 'required|string|max:255',
+        //     'last_name' => 'required|string|max:255',
+        // ]);
+$res = $this->driverService->updateDriverInfo($driver_id, $request->all());
 
-
-      
-        $validatedData = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-        ]);
-
-        $res = $this->driverService->updateDriverInfo($driver_id ,$request->all());
-
-        if($res['status']){
-
+        if ($res['status']) {
             return $this->successResponse(
                 null,
                 $res['message']
-             );
-
-        }else{
-
+            );
+        } else {
             return $this->errorResponse(
-            $res['message'] , 404 );
+                $res['message'],
+                404
+            );
         }
-
     }
 
-    public function getLastFiveOrdersNotDeliverd($driver_id){
+    public function getLastFiveOrdersNotDeliverd($driver_id)
+    {
 
         $data = $this->driverService->getLastFiveOrdersNotDeliverd($driver_id);
 
-          return $this->successResponse(
+        return $this->successResponse(
             $data,
             'dataFetchedSuccessfully'
         );
-
     }
 
-}
+    public function getDriverOrders($driver_id)
+    {
+        $data = $this->driverService->getDriverOrders($driver_id);
 
-     
+        return $this->successResponse(
+            $data,
+            'dataFetchedSuccessfully'
+        );
+    }
+}
