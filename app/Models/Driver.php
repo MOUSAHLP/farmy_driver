@@ -6,14 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
-use Illuminate\Database\Eloquent\Model;
 
-class Driver extends Model //extends Authenticatable implements JWTSubject
+class Driver extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable /* , HasRoles*/;
-
 
     protected $fillable = [
         'first_name',
@@ -29,23 +26,22 @@ class Driver extends Model //extends Authenticatable implements JWTSubject
         'longitude'
     ];
 
-
-
-
     protected $hidden = [
         'password',
         'deleted_at',
     ];
 
-    // public function getJWTIdentifier()
-    // {
-    //     return $this->getKey();
-    // }
+    public function getJWTIdentifier()
+    {
+      return $this->getKey();
+    }
 
-    // public function getJWTCustomClaims()
-    // {
-    //     return [];
-    // }
+    public function getJWTCustomClaims()
+    {
+      return [
+        'email'=>$this->email,
+      ];
+    }
     public function getUserNameAttribute()
     {
         return $this->first_name . ' ' . $this->last_name;
