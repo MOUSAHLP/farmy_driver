@@ -5,22 +5,23 @@ namespace App\Http\Resources;
 use App\Enums\ChangeEnums;
 use App\Enums\OrderStatus;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Helpers\AuthHelper;
+use App\Models\User;
+use App\Enums\MediaCollectionsNames;
 use Carbon\Carbon;
 
-class OrderResource extends JsonResource
+class OrderDetailResource extends JsonResource
 {
     public function toArray($request)
     {
         $actionMethod = $request->route()->getActionMethod();
         return match ($actionMethod) {
-            'getDriverOrders' => $this->getgetDriverOrdersResource(),
             'getDriverOrderDetail' => $this->getOrdersDetailResource(),
-
             default => $this->defaultResource(),
         };
     }
 
-    public function defaultResource()
+    public function getOrdersDetailResource()
     {
         return [
             'id' => $this->id,
@@ -60,33 +61,5 @@ class OrderResource extends JsonResource
             'rate' => $this->rate,
             'invoice' => $this->invoice
         ];
-    }
-    public function getgetDriverOrdersResource()
-    {
-        return [
-            'id' => $this->id,
-            'order_number' => $this->order_number,
-            'user_phone' => $this->user->phone,
-            'status' => OrderStatus::getName($this->status),
-            'delivery_method' => $this->deliveryMethod->name . " (".$this->deliveryMethod->time.")",
-            'order_time' => $this->getTime($this),
-            'order_date' =>  Carbon::parse( $this->created_at)->format('Y/m/d'),
-            'user_address' => $this->userAddress->area.",".$this->userAddress->street,
-        ];
-    }
-    public function getTime($order)
-    {
-        $time = $order->created_at;
-        if ($order->start_time != null) {
-            $time = $order->start_time;
-        }
-        $hour = Carbon::parse($time)->hour;
-        return $hour >= 12 ? "PM " . Carbon::parse($time)->subHours(12)->format('H:i')
-            : "AM " . Carbon::parse($time)->format('H:i');
-    }
-
-    public function getAddress($userAddress)
-    {
-        return $userAddress->area.",".$userAddress->street;
     }
 }

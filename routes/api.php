@@ -17,4 +17,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::get('/orders' , [DriverController::class , 'getLastFiveOrdersNotDeliverd']);
     Route::get('/driver-orders' , [DriverController::class , 'getDriverOrders']);
+    Route::get('/driver-orders/{order_id}' , [DriverController::class , 'getDriverOrderDetail']);
 });
+Route::get('/setting', [SettingController::class, 'getAppSettings']);
+
