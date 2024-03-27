@@ -10,18 +10,7 @@ use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
-
-
-
-
-
-use App\Models\Driver;
-
-
 use PDF;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
-use Carbon\Carbon;
 
 class DriverService
 {
