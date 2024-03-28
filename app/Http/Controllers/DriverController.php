@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\StatisticsEnums;
 use App\Models\Driver;
 use App\Models\Order;
 use App\Http\Requests\DriverRequest;
 use App\Services\DriverService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class DriverController extends Controller
@@ -115,6 +117,28 @@ class DriverController extends Controller
     public function getOrdersHistory()
     {
         $data = $this->driverService->getOrdersHistory();
+
+        return $this->successResponse(
+            $data,
+            'dataFetchedSuccessfully'
+        );
+    }
+
+    public function getOrdersStatistics()
+    {
+        $date = request("date") != null ? request("date") : Carbon::now();
+        $type = request("type") != null ? request("type") : StatisticsEnums::WEEKLY;
+
+        if ($type == StatisticsEnums::WEEKLY) {
+            $data = $this->driverService->calculateWeekHistory($date);
+        } else if ($type == StatisticsEnums::MONTHLY) {
+            $data = $this->driverService->calculateMonthlyHistory($date);
+        } else {
+            return $this->errorResponse(
+                'invalidData',
+                400
+            );
+        }
 
         return $this->successResponse(
             $data,
