@@ -29,29 +29,11 @@ return [
     'true'                  => 'true',
     'false'                 => 'false',
 
-    //users
-    "users" => [
-        "NotFound" => "User Not Found",
-    ],
-
-    //orders
-    "orders" => [
-        "NotFound" => "Order Not Found",
-        "Accepted" => "Order is Accepted",
-        "Already_Accepted" => "The Order Has Already Been Accepted",
-    ],
-
-    //coupons
-    "coupons" => [
-        "NoEnoughPoints" => "No Enough Points",
-    ],
-    // Achievements
-    "achievementAlreadyDone" => "Achievement Already Done",
-
-    // Ranks
-    "Ranks" => [
-        "NotFound" => "Rank Not Found",
-    ],
+    "area" => "area",
+    "street" => "street",
+    "building" => "building",
+    "building_number" => "building number",
+    "floor" => "floor",
 
     //Auth msgs
     'passwordChangedSuccessfully'    => 'Password changed successfully !',

@@ -5,20 +5,22 @@ use App\Http\Controllers\DriverController;
 use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
-// auth
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'register']);
+Route::group(['middleware' => 'lang'], function () {
 
-Route::group(['middleware' => 'auth:api'], function () {
-    Route::get('/driver-dues/{driver_id}', [DriverController::class, 'getDriverDues']);
-    Route::get('/generate-pdf-all-orders/{driver_id}', [DriverController::class, 'generatePdfAllOrdersForDriver']);
-    Route::get('/accept-order/{order_id}', [DriverController::class, 'acceptOrderByDriver']);
-    Route::put('/update-driver-info/{driver_id}', [DriverController::class, 'updateDriverInfo']);
+    // auth
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/register', [AuthController::class, 'register']);
 
-    Route::get('/orders', [DriverController::class, 'getLastFiveOrdersPending']);
-    Route::get('/driver-orders', [DriverController::class, 'getDriverOrders']);
-    Route::get('/driver-orders/{order_id}', [DriverController::class, 'getDriverOrderDetail']);
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::get('/driver-dues/{driver_id}', [DriverController::class, 'getDriverDues']);
+        Route::get('/generate-pdf-all-orders/{driver_id}', [DriverController::class, 'generatePdfAllOrdersForDriver']);
+        Route::get('/accept-order/{order_id}', [DriverController::class, 'acceptOrderByDriver']);
+        Route::put('/update-driver-info/{driver_id}', [DriverController::class, 'updateDriverInfo']);
 
-    Route::get('/driver-orders-history', [DriverController::class, 'getOrdersHistory']);
+        Route::get('/orders', [DriverController::class, 'getLastFiveOrdersPending']);
+        Route::get('/driver-orders', [DriverController::class, 'getDriverOrders']);
+        Route::get('/driver-orders/{order_id}', [DriverController::class, 'getDriverOrderDetail']);
+        Route::put('/driver-orders/{order_id}', [DriverController::class, 'getDriverOrderDetail']);
+    });
+    Route::get('/setting', [SettingController::class, 'getAppSettings']);
 });
-Route::get('/setting', [SettingController::class, 'getAppSettings']);

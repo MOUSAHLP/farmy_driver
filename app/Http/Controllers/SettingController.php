@@ -10,7 +10,7 @@ class SettingController extends Controller
 {
     public function getAppSettings(){
 
-        $settings = Setting::get()->first();
+        $settings = Setting::get(["id","baseUrl","version","phone" ])->first();
         $settings->update_time = config('constant.update_time');
         return $this->successResponse(
             $settings,
