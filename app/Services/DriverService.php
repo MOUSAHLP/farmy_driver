@@ -117,24 +117,4 @@ class DriverService
 
         return $data;
     }
-    public function getDriverOrders()
-    {
-        $driver_id = AuthHelper::userAuth()->id;
-
-        $orders = Order::where([['driver_id', $driver_id], ['status', [OrderStatus::Confirmed, OrderStatus::OnDelivery]]])
-            ->orderBy('created_at', 'Desc')
-            ->get();
-
-        return OrderResource::collection($orders);
-    }
-    public function getDriverOrderDetail($order_id)
-    {
-        $driver_id = AuthHelper::userAuth()->id;
-
-        $orders = Order::where("id", $order_id)
-            ->orderBy('created_at', 'Desc')
-            ->get();
-
-        return OrderDetailResource::collection($orders);
-    }
 }

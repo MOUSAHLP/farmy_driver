@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DriverController;
+use App\Http\Controllers\OrderDetailController;
 use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,8 +20,8 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::get('/orders' , [DriverController::class , 'getLastFiveOrdersPending']);
     Route::get('/driver-orders' , [DriverController::class , 'getDriverOrders']);
-    Route::get('/driver-orders/{order_id}' , [DriverController::class , 'getDriverOrderDetail']);
-    Route::put('/driver-orders/{order_id}' , [DriverController::class , 'getDriverOrderDetail']);
+    Route::get('/driver-orders/{order_id}' , [OrderDetailController::class , 'getDriverOrderDetail']);
+    Route::put('/driver-orders/{order_id}' , [OrderDetailController::class , 'updateDriverOrderDetail']);
 });
 Route::get('/setting', [SettingController::class, 'getAppSettings']);
 });
