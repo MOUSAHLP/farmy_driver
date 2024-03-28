@@ -93,4 +93,13 @@ class DriverController extends Controller
             'dataFetchedSuccessfully'
         );
     }
+    public function getOrdersHistory()
+    {
+        $data = $this->driverService->getOrdersHistory();
+
+        return $this->successResponse(
+            $data,
+            'dataFetchedSuccessfully'
+        );
+    }
 }
