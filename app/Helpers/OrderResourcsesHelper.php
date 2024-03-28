@@ -49,7 +49,7 @@ class OrderResourcsesHelper
             ->map(function ($orderDetail) {
                 return
                     [
-                        'id'         => $orderDetail->product->id,
+                        'id'         => $orderDetail->id,
                         'name'       => $orderDetail->product->name,
                         'image'      => $orderDetail->product->getFirstMediaUrl(MediaCollectionsNames::ProductImage),
                         'quantity'   => $orderDetail->quantity,

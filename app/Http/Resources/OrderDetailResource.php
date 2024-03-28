@@ -18,7 +18,6 @@ class OrderDetailResource extends JsonResource
         $actionMethod = $request->route()->getActionMethod();
         return match ($actionMethod) {
             'getDriverOrderDetail' => $this->getOrdersDetailResource(),
-            default => $this->defaultResource(),
         };
     }
 
