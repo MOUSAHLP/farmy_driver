@@ -94,13 +94,23 @@ class DriverController extends Controller
         );
     }
 
-    public function getDriverOrders($driver_id)
+    public function getDriverOrders()
     {
-        $data = $this->driverService->getDriverOrders($driver_id);
+        $data = $this->driverService->getDriverOrders();
 
         return $this->successResponse(
             $data,
             'dataFetchedSuccessfully'
         );
     }
+    public function getDriverOrderDetail($order_id)
+    {
+        $data = $this->driverService->getDriverOrderDetail($order_id);
+
+        return $this->successResponse(
+            $data,
+            'dataFetchedSuccessfully'
+        );
+    }
+
 }

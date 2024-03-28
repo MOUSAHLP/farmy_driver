@@ -5,10 +5,7 @@ namespace App\Http\Resources;
 use App\Enums\ChangeEnums;
 use App\Enums\OrderStatus;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Helpers\AuthHelper;
-use App\Models\User;
-use App\Enums\MediaCollectionsNames;
-
+use Carbon\Carbon;
 
 class OrderResource extends JsonResource
 {
@@ -16,8 +13,9 @@ class OrderResource extends JsonResource
     {
         $actionMethod = $request->route()->getActionMethod();
         return match ($actionMethod) {
-            'index' => $this->getAllResource(),
-            'getUserAllInvoices' => $this->getUserAllInvoicesResource(),
+            'getDriverOrders' => $this->getgetDriverOrdersResource(),
+            'getDriverOrderDetail' => $this->getOrdersDetailResource(),
+
             default => $this->defaultResource(),
         };
     }
@@ -63,46 +61,32 @@ class OrderResource extends JsonResource
             'invoice' => $this->invoice
         ];
     }
+    public function getgetDriverOrdersResource()
+    {
+        return [
+            'id' => $this->id,
+            'order_number' => $this->order_number,
+            'user_phone' => $this->user->phone,
+            'status' => OrderStatus::getName($this->status),
+            'delivery_method' => $this->deliveryMethod->name . " (".$this->deliveryMethod->time.")",
+            'order_time' => $this->getTime($this),
+            'order_date' =>  Carbon::parse( $this->created_at)->format('Y/m/d'),
+            'user_address' => $this->userAddress->area.",".$this->userAddress->street,
+        ];
+    }
+    public function getTime($order)
+    {
+        $time = $order->created_at;
+        if ($order->start_time != null) {
+            $time = $order->start_time;
+        }
+        $hour = Carbon::parse($time)->hour;
+        return $hour >= 12 ? "PM " . Carbon::parse($time)->subHours(12)->format('H:i')
+            : "AM " . Carbon::parse($time)->format('H:i');
+    }
 
-    // public function productResource($product)
-    // {
-    //     $is_favorite = false;
-    //     if (isset(AuthHelper::userAuth()->id)) {
-    //         $user_favorites = User::where('id', AuthHelper::userAuth()->id)->with("favorites")->get()->pluck("favorites")->first();
-    //         foreach ($user_favorites as $favorite) {
-    //             if ($favorite->product_id == $product->id) {
-    //                 $is_favorite = true;
-    //                 break;
-    //             }
-    //         }
-    //     }
-    //     return [
-    //         'id'               => $product->id,
-    //         'name'             => $product->name,
-    //         'description'      => $product->description,
-    //         'price'            => $product->price,
-    //         'tax'              => $product->tax,
-    //         'slug'             => $product->slug,
-    //         'quantity'         => $product->quantity,
-    //         'status'           => $product->status,
-    //         'availability'     => $product->availability,
-    //         'is_favorite'       => $is_favorite,
-    //         'seller'           => $product->seller?->only('id', 'name'),
-    //         'subcategory'      => $product->subCategory?->only('id', 'name'),
-    //         'category'         => $product->subCategory?->category->only('id', 'name'),
-    //         'discount'         => $product->discount,
-    //         'discount_status'  => $product->discount_status,
-    //         'product_source'   => $product->product_source,
-    //         'commission'       => $product->commission?->only('id', 'name') + ['commission_value' => $product->commission_value],
-    //         'created_at'       => $product->created_at,
-    //         'image'      => $product->getFirstMediaUrl(MediaCollectionsNames::ProductImage),
-    //         'attributes' => $product->attributes->map(function ($attribute) {
-    //             return [
-    //                 'id' => $attribute->id,
-    //                 'name' => $attribute->name,
-    //                 'value' =>  $attribute->pivot->value,
-    //             ];
-    //         }),
-    //     ];
-    // }
+    public function getAddress($userAddress)
+    {
+        return $userAddress->area.",".$userAddress->street;
+    }
 }
