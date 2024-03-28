@@ -13,7 +13,7 @@ Route::group([
     "middleware" => 'auth:api'
 ], function () {
     Route::get('/setting', [SettingController::class, 'getAppSettings']);
-    Route::get('/driver-dues/{driver_id}', [DriverController::class, 'getDriverDues']);
+    Route::get('/driver-dues', [DriverController::class, 'getDriverDues']);
     Route::get('/generate-pdf-all-orders/{driver_id}', [DriverController::class, 'generatePdfAllOrdersForDriver']);
     Route::get('/accept-order/{order_id}', [DriverController::class, 'acceptOrderByDriver']);
     Route::put('/update-driver-info/{driver_id}', [DriverController::class, 'updateDriverInfo']);
