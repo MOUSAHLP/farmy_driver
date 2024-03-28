@@ -29,32 +29,11 @@ return [
 
     'false'                 => 'لا',
 
-    //users
-    "users" => [
-        "NotFound" => "المستخدم غير موجودة",
-    ],
-
-
-    //orders
-    "orders" => [
-        "NotFound" => "الطلب غير موجودة",
-        "Accepted" => "تم قبول الطلب",
-        "Already_Accepted" => "الطلب تم قبوله مسبقا",
-    ],
-
-
-    //coupons
-    "coupons" => [
-        "NoEnoughPoints" => "النقاط غير كافية",
-    ],
-
-    // Achievements
-    "achievementAlreadyDone" => "الإنجاز مكتمل",
-
-    // Ranks
-    "Ranks" => [
-        "NotFound" => "الرتبة غير موجودة",
-    ],
+    "area" => "المنطقة",
+    "street" => "الشارع",
+    "building" => "اسم البناء",
+    "building_number" => "رقم البناء",
+    "floor" => "الطابق",
 
     //Auth msgs
     'passwordChangedSuccessfully'    => 'تم تغيير كلمة المرور بنجاح',
