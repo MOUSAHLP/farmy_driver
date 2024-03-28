@@ -5,27 +5,34 @@ namespace App\Services;
 use App\Enums\OrderStatus;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
-use App\Models\Driver ;
+use App\Models\Driver;
 use App\Helpers\AuthHelper;
 use App\Http\Resources\OrderDetailResource;
-use PDF;
-use Illuminate\Support\Facades\File;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
-use Spatie\LaravelPdf\Facades\Pdf as FacadesPdf;
 
 class DriverService
 {
-    public function getDriverDues($driver_id)
+    public function getDriverDues()
     {
-        $dues = Order::where('driver_id', $driver_id)->sum('delivery_fee');
+        $driver_id = auth()->user()->id;
+
+        $dues = Order::where([['driver_id', $driver_id]])->sum('delivery_fee');
 
         $orders = Order::where([['driver_id', $driver_id], ['status', OrderStatus::Deliverd]])
             ->orderBy('created_at', 'Desc')
             ->take(5)
             ->select('order_number', 'created_at', 'total')->get();
-        return  ['driver_dues' => $dues, 'orders' => $orders];
+
+        // add date
+        $data =  $orders->map(function ($order) {
+            $order->time = Carbon::parse($order->created_at)->format('Y/m/d');
+            return $order;
+        });
+
+        return  ['driver_dues' => $dues, 'orders' => $data];
     }
 
     public function acceptOrderByDriver($order)
@@ -48,7 +55,7 @@ class DriverService
         $time = now();
         $orders = Order::where('driver_id', $driver_id)->orderBy('created_at', "desc")->select('order_number', 'created_at', 'total')->get()->toArray();
 
-        $pdf = FacadesPdf::loadView('inv', ['data' => $orders]);
+        $pdf = Pdf::loadView('inv', ['data' => $orders]);
         // $repository = 'storage/app/public/ordesPdf'; //comment this line for 000webhost
         // if (!File::exists($repository)) {
         //     File::makeDirectory($repository, 0777, true);
@@ -110,21 +117,23 @@ class DriverService
 
         return $data;
     }
-    public function getDriverOrders(){
+    public function getDriverOrders()
+    {
         $driver_id = AuthHelper::userAuth()->id;
 
-        $orders = Order::where([['driver_id', $driver_id],['status' ,[ OrderStatus::Confirmed,OrderStatus::OnDelivery]]])
-        ->orderBy('created_at' , 'Desc')
-        ->get();
+        $orders = Order::where([['driver_id', $driver_id], ['status', [OrderStatus::Confirmed, OrderStatus::OnDelivery]]])
+            ->orderBy('created_at', 'Desc')
+            ->get();
 
         return OrderResource::collection($orders);
     }
-    public function getDriverOrderDetail($order_id){
+    public function getDriverOrderDetail($order_id)
+    {
         $driver_id = AuthHelper::userAuth()->id;
 
-        $orders = Order::where("id",$order_id)
-        ->orderBy('created_at' , 'Desc')
-        ->get();
+        $orders = Order::where("id", $order_id)
+            ->orderBy('created_at', 'Desc')
+            ->get();
 
         return OrderDetailResource::collection($orders);
     }

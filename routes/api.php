@@ -13,9 +13,9 @@ Route::post('/register', [AuthController::class, 'register']);
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/driver-dues/{driver_id}', [DriverController::class, 'getDriverDues']);
-    Route::get('/generate-pdf-all-orders/{driver_id}' , [DriverController::class, 'generatePdfAllOrdersForDriver']);
+    Route::get('/generate-pdf-all-orders/{driver_id}', [DriverController::class, 'generatePdfAllOrdersForDriver']);
     Route::get('/accept-order/{order_id}', [DriverController::class, 'acceptOrderByDriver']);
-    Route::put('/update-driver-info/{driver_id}' , [DriverController::class , 'updateDriverInfo']);
+    Route::put('/update-driver-info/{driver_id}', [DriverController::class, 'updateDriverInfo']);
 
     Route::get('/orders' , [DriverController::class , 'getLastFiveOrdersPending']);
     Route::get('/driver-orders' , [DriverController::class , 'getDriverOrders']);

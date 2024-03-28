@@ -14,9 +14,10 @@ class DriverController extends Controller
     {
     }
 
-    public function getDriverDues($driver_id)
+    public function getDriverDues()
     {
-        $driverDues = $this->driverService->getDriverDues($driver_id);
+        $driverDues = $this->driverService->getDriverDues();
+
         return $this->successResponse(
             $driverDues,
             'dataFetchedSuccessfully'
