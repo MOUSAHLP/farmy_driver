@@ -17,7 +17,7 @@ class DriverService
 {
     public function getDriverDues()
     {
-        $driver_id = auth()->user()->id;
+        $driver_id = AuthHelper::userAuth()->id;
 
         $dues = Order::where([['driver_id', $driver_id]])->sum('delivery_fee');
 
@@ -38,8 +38,9 @@ class DriverService
     public function acceptOrderByDriver($order)
     {
         if ($order->driver_id == null && $order->status == OrderStatus::Pending) {
+            $driver_id = AuthHelper::userAuth()->id;
 
-            $order->driver_id = auth()->user()->id;
+            $order->driver_id = $driver_id;
             $order->status =  OrderStatus::Confirmed;
             $order->save();
 
@@ -136,5 +137,30 @@ class DriverService
             ->get();
 
         return OrderDetailResource::collection($orders);
+    }
+    public function getOrdersHistory()
+    {
+        $driver_id = AuthHelper::userAuth()->id;
+
+        $query = Order::where('driver_id', $driver_id)
+            ->orderBy('created_at', 'Desc');
+
+        $ordersCount = $query->count();
+
+        $driverOrders =  $query->where('status', OrderStatus::Confirmed)
+            ->get();
+
+        // return ["ordersCount" => $ordersCount, "orders" =>  $driverOrders];
+        $weekData = [];
+        $now =  Carbon::now();
+
+        for ($i = 0; $i < 7; $i++) {
+            $weekData[$now->minDayName] = $query->where('status', OrderStatus::Deliverd)
+                ->whereDate('date', $now->format("Y-m-d"))->count();
+            $now = $now->subDay();
+        }
+        return $weekData;
+
+        // return OrderDetailResource::collection($orders);
     }
 }
