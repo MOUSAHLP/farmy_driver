@@ -19,9 +19,9 @@ Route::group(['middleware' => 'lang'], function () {
         Route::put('/update-driver-info/{driver_id}', [DriverController::class, 'updateDriverInfo']);
 
         Route::get('/orders', [DriverController::class, 'getLastFiveOrdersPending']);
-        Route::get('/driver-orders', [DriverController::class, 'getDriverOrders']);
-        Route::get('/driver-orders/{order_id}', [DriverController::class, 'getDriverOrderDetail']);
-        Route::put('/driver-orders/{order_id}', [DriverController::class, 'getDriverOrderDetail']);
+        Route::get('/driver-orders', [OrderDetailController::class, 'getDriverOrders']);
+        Route::get('/driver-orders/{order_id}', [OrderDetailController::class, 'getDriverOrderDetail']);
+        Route::put('/driver-orders/{order_id}', [OrderDetailController::class, 'updateDriverOrderDetail']);
     });
     Route::get('/setting', [SettingController::class, 'getAppSettings']);
 });

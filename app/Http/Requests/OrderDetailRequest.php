@@ -31,6 +31,15 @@ class OrderDetailRequest extends FormRequest
         ];
     }
 
+    public function attributes()
+    {
+        return [
+            'approved_products_ids' => __("attributes.approved_products_ids"),
+            'approved_products_ids.*' => __("attributes.approved_products_ids"),
+            'canceled_products_ids' => __("attributes.canceled_products_ids"),
+            'canceled_products_ids.*' => __("attributes.canceled_products_ids"),
+        ];
+    }
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([
