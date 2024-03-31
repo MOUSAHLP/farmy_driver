@@ -7,7 +7,6 @@ use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'lang'], function () {
-
     // auth
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
@@ -18,10 +17,11 @@ Route::group(['middleware' => 'lang'], function () {
         Route::get('/accept-order/{order_id}', [DriverController::class, 'acceptOrderByDriver']);
         Route::put('/update-driver-info/{driver_id}', [DriverController::class, 'updateDriverInfo']);
 
-        Route::get('/orders', [DriverController::class, 'getLastFiveOrdersPending']);
-        Route::get('/driver-orders', [OrderDetailController::class, 'getDriverOrders']);
-        Route::get('/driver-orders/{order_id}', [OrderDetailController::class, 'getDriverOrderDetail']);
-        Route::put('/driver-orders/{order_id}', [OrderDetailController::class, 'updateDriverOrderDetail']);
+        Route::get('/orders',[DriverController::class, 'getLastFiveOrdersPending']);
+        Route::get('/driver-orders',[OrderDetailController::class, 'getDriverOrders']);
+        Route::get('/driver-orders/{order_id}',  [OrderDetailController::class, 'getDriverOrderDetail']);
+        Route::put('/driver-orders/{order_id}',[OrderDetailController::class, 'updateDriverOrderDetail']);
+
     });
     Route::get('/setting', [SettingController::class, 'getAppSettings']);
 });
