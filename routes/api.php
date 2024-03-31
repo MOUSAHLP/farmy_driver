@@ -13,6 +13,7 @@ Route::group(['middleware' => 'lang'], function () {
     Route::post('/register', [AuthController::class, 'register']);
 
     Route::group(['middleware' => 'auth:api'], function () {
+
         Route::get('/driver-dues/{driver_id}', [DriverController::class, 'getDriverDues']);
         Route::get('/generate-pdf-all-orders/{driver_id}', [DriverController::class, 'generatePdfAllOrdersForDriver']);
         Route::get('/accept-order/{order_id}', [DriverController::class, 'acceptOrderByDriver']);
@@ -23,8 +24,10 @@ Route::group(['middleware' => 'lang'], function () {
         Route::get('/driver-orders/{order_id}', [DriverController::class, 'getDriverOrderDetail']);
         Route::put('/driver-orders/{order_id}', [DriverController::class, 'updateDriverOrderDetail']);
 
+        // Orders History
         Route::get('/get-driver-orders-history', [DriverController::class, 'getOrdersHistory']);
         Route::get('/get-orders-statistics', [DriverController::class, 'getOrdersStatistics']);
     });
+
     Route::get('/setting', [SettingController::class, 'getAppSettings']);
 });
