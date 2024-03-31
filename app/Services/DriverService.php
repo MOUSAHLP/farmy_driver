@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\OrderStatus;
+use App\Enums\StatisticsEnums;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\Driver;
@@ -118,29 +119,93 @@ class DriverService
 
         return $data;
     }
+    public function getDriverOrders()
+    {
+        $driver_id = AuthHelper::userAuth()->id;
+
+        $orders = Order::where([['driver_id', $driver_id], ['status', [OrderStatus::Confirmed, OrderStatus::OnDelivery]]])
+            ->orderBy('created_at', 'Desc')
+            ->get();
+
+        return OrderResource::collection($orders);
+    }
+    public function getDriverOrderDetail($order_id)
+    {
+        $driver_id = AuthHelper::userAuth()->id;
+
+        $orders = Order::where("id", $order_id)
+            ->orderBy('created_at', 'Desc')
+            ->get();
+
+        return OrderDetailResource::collection($orders);
+    }
+
+    public function calculateWeekHistory($date)
+    {
+        $weekData = [];
+
+        $driver_id = AuthHelper::userAuth()->id;
+        $now =  Carbon::parse($date);
+
+        for ($i = 0; $i < 7; $i++) {
+            $weekData[$now->minDayName] = Order::where('driver_id', $driver_id)
+                ->where('status', OrderStatus::Deliverd)
+                ->whereDate('date', $now->format("Y-m-d"))
+                ->count();
+
+            $now = $now->subDay();
+        }
+        return ["week_data" => $weekData];
+    }
+
+    public function calculateMonthlyHistory($date)
+    {
+        $monthData = [];
+
+        $driver_id = AuthHelper::userAuth()->id;
+        $firstDay =  Carbon::parse($date)->startOfMonth();
+        $lastDay =  Carbon::parse($date)->lastOfMonth();
+
+        for ($i = $lastDay->daysInMonth; $i > 0; $i--) {
+
+            $monthData[$i] = Order::where('driver_id', $driver_id)
+                ->where('status', OrderStatus::Deliverd)
+                ->whereDate('date', ">=", $firstDay->format("Y-m-d"))
+                ->whereDate('date', "<=", $lastDay->format("Y-m-d"))
+                ->whereDate('date', $lastDay->format("Y-m-d"))
+                ->count();
+
+            $lastDay = $lastDay->subDay();
+        }
+        return ["month_data" => $monthData];
+    }
+
     public function getOrdersHistory()
     {
         $driver_id = AuthHelper::userAuth()->id;
+        $date = request("date") != null ? request("date") : Carbon::now();
 
         $query = Order::where('driver_id', $driver_id)
             ->orderBy('created_at', 'Desc');
 
         $ordersCount = $query->count();
 
-        $driverOrders =  $query->where('status', OrderStatus::Confirmed)
+        $driverOrders =  $query->where('status', OrderStatus::Deliverd)
             ->get();
 
-        // return ["ordersCount" => $ordersCount, "orders" =>  $driverOrders];
-        $weekData = [];
-        $now =  Carbon::now();
-
-        for ($i = 0; $i < 7; $i++) {
-            $weekData[$now->minDayName] = $query->where('status', OrderStatus::Deliverd)
-                ->whereDate('date', $now->format("Y-m-d"))->count();
-            $now = $now->subDay();
+        $monthData = null;
+        if (request("type") == StatisticsEnums::MONTHLY) {
+            $monthData = $this->calculateMonthlyHistory($date);
         }
-        return $weekData;
 
-        // return OrderDetailResource::collection($orders);
+        $weekData = null;
+        if ($monthData == null || request("type") == StatisticsEnums::WEEKLY) {
+            $weekData = $this->calculateWeekHistory($date);
+        }
+
+        return array_merge(isset($weekData) ? $weekData : [], isset($monthData) ? $monthData : [], [
+            'orders_count' => $ordersCount,
+            "driver_orders" => OrderResource::collection($driverOrders)
+        ]);
     }
 }
