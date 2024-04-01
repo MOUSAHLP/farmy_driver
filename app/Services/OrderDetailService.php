@@ -25,9 +25,9 @@ class OrderDetailService
     {
         $orders = Order::where("id", $order_id)
             ->orderBy('created_at', 'Desc')
-            ->get();
+            ->get()->first();
 
-        return OrderDetailResource::collection($orders);
+        return new OrderDetailResource($orders);
     }
     public function updateDriverOrderDetail($order_id, $request)
     {

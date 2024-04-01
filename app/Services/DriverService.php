@@ -56,8 +56,8 @@ class DriverService
     {
         $orders = Order::where('driver_id', $driver_id)->orderBy('created_at', "desc")->select('order_number', 'created_at', 'total')->get()->toArray();
 
-        // $pdf = Pdf::loadView('inv', ['data' => $orders]);
-        // return $pdf->download('invoice.pdf');
+        $pdf = Pdf::loadView('inv', ['data' => $orders]);
+        return $pdf->download('invoice.pdf');
 
         // $view = view('welcome', [
         //   ])->render();
@@ -99,7 +99,7 @@ class DriverService
         //   ->format('a4')
         //   ->landscape()
         //   ->save(public_path('downloads').'/'.$name);
-       return Browsershot::html('<h1>Hello world!!</h1>')->save('example.pdf');
+    //    return Browsershot::html('<h1>Hello world!!</h1>')->save('example.pdf');
         // return pdf()
         // ->view('welcome')
         // ->name('invoice-2023-04-10.pdf')
