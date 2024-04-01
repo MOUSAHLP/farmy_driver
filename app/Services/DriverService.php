@@ -99,7 +99,7 @@ class DriverService
         //   ->format('a4')
         //   ->landscape()
         //   ->save(public_path('downloads').'/'.$name);
-       return Browsershot::html('<h1>Hello world!!</h1>')->setIncludePath('D:\Programs\nodejs')->save('example.pdf');
+       return Browsershot::html('<h1>Hello world!!</h1>')->save('example.pdf');
         // return pdf()
         // ->view('welcome')
         // ->name('invoice-2023-04-10.pdf')
