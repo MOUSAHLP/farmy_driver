@@ -76,7 +76,7 @@ class OrderResource extends JsonResource
     }
 
 
-    public function getOrdersHistoryResource($extra)
+    public function getOrdersHistoryResource()
     {
         return [
             'id' => $this->id,
@@ -84,7 +84,6 @@ class OrderResource extends JsonResource
             'status' => OrderStatus::getName($this->status),
             'order_date' =>  Carbon::parse($this->created_at)->format('Y/m/d'),
             'total' => $this->total,
-            'weekData' =>  $this->weekData,
         ];
     }
 
