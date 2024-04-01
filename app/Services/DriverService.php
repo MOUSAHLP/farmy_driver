@@ -10,7 +10,8 @@ use App\Models\Driver;
 use App\Helpers\AuthHelper;
 use App\Http\Resources\OrderDetailResource;
 use Barryvdh\DomPDF\Facade\Pdf;
-
+use function Spatie\LaravelPdf\Support\pdf;
+use Spatie\Browsershot\Browsershot;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 
@@ -53,29 +54,56 @@ class DriverService
 
     public function generatePdfAllOrdersForDriver($driver_id)
     {
-
-        $time = now();
         $orders = Order::where('driver_id', $driver_id)->orderBy('created_at', "desc")->select('order_number', 'created_at', 'total')->get()->toArray();
 
         $pdf = Pdf::loadView('inv', ['data' => $orders]);
-        // $repository = 'storage/app/public/ordesPdf'; //comment this line for 000webhost
-        // if (!File::exists($repository)) {
-        //     File::makeDirectory($repository, 0777, true);
-        // }
-        // $fileName = 'orders.pdf';
-
-
-
-        Storage::put('public/pdf/' . $time . '.pdf', $pdf->output());
-
         return $pdf->download('invoice.pdf');
 
+        // $view = view('welcome', [
+        //   ])->render();
 
-        // $filePath = $repository . Carbon::now()->format('Y_m_d_u') . '_' . $fileName;
+        //   $name = 'name_of_my.pdf';
 
-        // $pdf->
-        // // return $pdf->download( $filePath);
-
+        //   Browsershot::html($view)
+        //   ->addChromiumArguments([
+        //   'font-render-hinting' => 'none',
+        //   'allow-running-insecure-content',
+        //   'autoplay-policy' => 'user-gesture-required',
+        //   'disable-component-update',
+        //   'disable-domain-reliability',
+        //   'disable-features' => 'AudioServiceOutOfProcess,IsolateOrigins,site-per-process',
+        //   'disable-print-preview',
+        //   'disable-setuid-sandbox',
+        //   'disable-site-isolation-trials',
+        //   'disable-speech-api',
+        //   'disable-web-security',
+        //   'disable-setuid-sandbox',
+        //   'disable-dev-shm-usage',
+        //   'disk-cache-size' => 33554432,
+        //   'enable-features' => 'SharedArrayBuffer',
+        //   'hide-scrollbars',
+        //   'ignore-gpu-blocklist',
+        //   'in-process-gpu',
+        //   'mute-audio',
+        //   'no-default-browser-check',
+        //   'no-pings',
+        //   'no-sandbox',
+        //   'no-zygote',
+        //   'use-gl' => 'swiftshader',
+        //   'window-size' => '1920,1080',
+        //   'single-process'
+        //   ])
+        //   ->timeout(120000)
+        //   ->waitUntilNetworkIdle()
+        //   ->scale('0.8')
+        //   ->format('a4')
+        //   ->landscape()
+        //   ->save(public_path('downloads').'/'.$name);
+    //    return Browsershot::html('<h1>Hello world!!</h1>')->save('example.pdf');
+        // return pdf()
+        // ->view('welcome')
+        // ->name('invoice-2023-04-10.pdf')
+        // ->download();
     }
 
     public function updateDriverInfo($driver_id, $data)
@@ -118,6 +146,7 @@ class DriverService
                 : "AM " . Carbon::parse($order->created_at)->format('H:i');
 
             return [
+                'id' => $order->id,
                 'order_number' => $order->order_number,
                 'location' => $order->userAddress ? $order->userAddress->address : null,
                 'status' => $order->status,
