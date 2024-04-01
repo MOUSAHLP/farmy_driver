@@ -85,6 +85,15 @@ class DriverController extends Controller
         }
     }
 
+    public function getAllOrders()
+    {
+        $data = $this->driverService->getAllOrders();
+
+        return $this->successResponse(
+            $data,
+            'dataFetchedSuccessfully'
+        );
+    }
     public function getLastFiveOrdersPending()
     {
         $data = $this->driverService->getLastFiveOrdersPending();

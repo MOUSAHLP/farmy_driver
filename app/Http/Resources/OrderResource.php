@@ -11,24 +11,13 @@ use Carbon\Carbon;
 class OrderResource extends JsonResource
 {
 
-    private $weekData;
-
-    public function __construct($resource, $weekData)
-    {
-        // Ensure you call the parent constructor
-        parent::__construct($resource);
-        $this->resource = $resource;
-
-        $this->weekData = $weekData;
-    }
-
     public function toArray($request)
     {
         $actionMethod = $request->route()->getActionMethod();
         return match ($actionMethod) {
             'getDriverOrders' => $this->getgetDriverOrdersResource(),
-            'getOrdersHistory' => $this->getOrdersHistoryResource($request->extra),
-
+            'getOrdersHistory' => $this->getOrdersHistoryResource(),
+            'getAllOrders' => $this->getAllOrdersResource(),
             default => $this->defaultResource(),
         };
     }
@@ -75,6 +64,17 @@ class OrderResource extends JsonResource
         ];
     }
 
+
+    public function getAllOrdersResource()
+    {
+        return [
+            'id' => $this->id,
+            'order_number' => $this->order_number,
+            'status' => OrderStatus::getName($this->status),
+            'order_date' =>  Carbon::parse($this->created_at)->format('Y/m/d'),
+            'total' => $this->total,
+        ];
+    }
 
     public function getOrdersHistoryResource()
     {
