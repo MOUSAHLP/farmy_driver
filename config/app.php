@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
-use Barryvdh\DomPDF\Facade\PDF   ;
+use Barryvdh\DomPDF\Facade\PDF;
 
 return [
 
@@ -170,8 +170,10 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Krlove\EloquentModelGenerator\Provider\GeneratorServiceProvider::class,
-        Barryvdh\DomPDF\ServiceProvider::class,
-        
+        // Barryvdh\DomPDF\ServiceProvider::class,
+        // Barryvdh\Snappy\ServiceProvider::class,
+        // niklasravnsborg\LaravelPdf\PdfServiceProvider::class
+        Mccarlosen\LaravelMpdf\LaravelMpdfServiceProvider::class
     ])->toArray(),
 
     /*
@@ -185,13 +187,17 @@ return [
     |
     */
 
-     
-    
-    'aliases' =>  
-    
-   Facade::defaultAliases()->merge([
+
+
+    'aliases' =>
+
+    Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
-        'PDF' => PDF::class,
+        // 'PDF' => PDF::class,
+        // 'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
+        // 'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
+        // 'PDF' => niklasravnsborg\LaravelPdf\Facades\Pdf::class
+        'PDF' => Mccarlosen\LaravelMpdf\Facades\LaravelMpdf::class
     ])->toArray(),
 
 ];
