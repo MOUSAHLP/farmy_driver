@@ -12,7 +12,6 @@
         }
 
         .conatiner {
-            width: 1000px;
             height: auto;
             border: 1px solid #333;
             display: flex;
@@ -33,7 +32,6 @@
         }
 
         .title2 {
-            width: 80%;
             height: auto;
             display: flex;
             justify-content: space-between;
@@ -473,13 +471,11 @@
                     <tbody>
                         @foreach ($orders as $order)
                             <tr>
-                                <td>	order_number</td>
-                                <td>assdds</td>
-                                <td>assdds</td>
+                                <td>{{$order->total}}</td>
+                                <td>{{$order->created_at}}</td>
+                                <td>{{$order->order_number}}</td>
                             </tr>
                         @endforeach
-                        <!-- forEach -->
-                        <!-- forEach -->
                     </tbody>
                 </table>
                 <!-- MainTable -->

@@ -55,7 +55,7 @@ class DriverController extends Controller
 
     public function generatePdfAllOrdersForDriver($driver_id)
     {
-        $pdf = $this->driverService->generatePdfAllOrdersForDriver($driver_id);
+        $pdf = $this->driverService->generatePdfAllOrdersForDriver();
 
         return $pdf;
         // return $this->successResponse(

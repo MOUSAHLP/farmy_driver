@@ -18,6 +18,7 @@ class OrderResource extends JsonResource
             'getDriverOrders' => $this->getgetDriverOrdersResource(),
             'getOrdersHistory' => $this->getOrdersHistoryResource(),
             'getAllOrders' => $this->getAllOrdersResource(),
+            'generatePdfAllOrdersForDriver' => $this->getAllOrdersResource(),
             default => $this->defaultResource(),
         };
     }
