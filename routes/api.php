@@ -11,10 +11,10 @@ Route::group(['middleware' => 'lang'], function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
 
+    Route::get('/generate-pdf-all-orders/{driver_id}', [DriverController::class, 'generatePdfAllOrdersForDriver']);
     Route::group(['middleware' => 'auth:api'], function () {
 
         Route::get('/driver-dues', [DriverController::class, 'getDriverDues']);
-        Route::get('/generate-pdf-all-orders/{driver_id}', [DriverController::class, 'generatePdfAllOrdersForDriver']);
         Route::get('/accept-order/{order_id}', [DriverController::class, 'acceptOrderByDriver']);
         Route::put('/update-driver-info/{driver_id}', [DriverController::class, 'updateDriverInfo']);
 

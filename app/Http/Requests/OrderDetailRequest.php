@@ -24,9 +24,9 @@ class OrderDetailRequest extends FormRequest
     public function getupdateDriverOrderDetailRules()
     {
         return [
-            'approved_products_ids'   => 'required|array',
+            'approved_products_ids'   => 'present|array',
             'approved_products_ids.*' => 'integer',
-            'canceled_products_ids'   => 'required|array',
+            'canceled_products_ids'   => 'present|array',
             'canceled_products_ids.*' => 'integer',
         ];
     }
