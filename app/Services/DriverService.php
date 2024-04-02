@@ -56,7 +56,6 @@ class DriverService
 
     public function generatePdfAllOrdersForDriver()
     {
-        $driver_id = AuthHelper::userAuth()->id;
         $data["orders"] = $this->getAllOrders();
         $pdf = Pdf::loadView('invoice', $data);
         return $pdf->stream('document.pdf');

@@ -53,15 +53,10 @@ class DriverController extends Controller
     }
 
 
-    public function generatePdfAllOrdersForDriver($driver_id)
+    public function generatePdfAllOrdersForDriver()
     {
         $pdf = $this->driverService->generatePdfAllOrdersForDriver();
-
         return $pdf;
-        // return $this->successResponse(
-        //     $pdf,
-        //     'dataFetchedSuccessfully'
-        // );
     }
 
     public function updateDriverInfo($driver_id, DriverRequest $request)
