@@ -82,6 +82,15 @@ class DriverService
         }
     }
 
+    public function getAllOrders()
+    {
+        $driver_id = AuthHelper::userAuth()->id;
+        $orders = Order::where("driver_id", $driver_id)
+            ->where('status', OrderStatus::Deliverd)
+            ->orderBy('created_at', 'Desc')->get();
+
+        return OrderResource::collection($orders);
+    }
     public function getLastFiveOrdersPending()
     {
         $orders = Order::where('status', OrderStatus::Pending)
