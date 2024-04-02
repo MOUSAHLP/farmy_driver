@@ -2,22 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserAuthRequest;
 use App\Models\Driver;
+use App\Services\UserAuthService;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+    public function __construct(private UserAuthService $userAuthService)
     {
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-        ]);
-        $credentials = $request->only('email', 'password');
+    }
 
-        $token = Auth::guard('api')->attempt($credentials);
+    public function login(UserAuthRequest $request)
+    {
+        $validatedData = $request->validated();
+
+        $token = Auth::guard('api')->attempt($validatedData);
         if (!$token) {
             return response()->json([
                 'status' => 'error',
@@ -33,16 +34,8 @@ class AuthController extends Controller
         ]);
     }
 
-    public function register(Request $request)
+    public function register(UserAuthRequest $request)
     {
-        $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
-            'phone' => 'required|min:9',
-        ]);
-
         $user = Driver::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
@@ -61,5 +54,15 @@ class AuthController extends Controller
                 'type' => 'bearer',
             ]
         ]);
+    }
+
+    public function logout()
+    {
+        $this->userAuthService->logout();
+
+        return $this->successResponse(
+            null,
+            'userSuccessfullySignedOut'
+        );
     }
 }

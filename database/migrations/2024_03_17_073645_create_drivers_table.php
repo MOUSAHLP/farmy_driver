@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('email')->index();
             $table->string('password');
             $table->string('address')->nullable();
+            $table->time('birthday')->nullable();
             $table->bigInteger('phone')->index();
             $table->double('latitude', null, 0)->nullable();
             $table->double('longitude', null, 0)->nullable();

@@ -18,6 +18,7 @@ class Driver extends Authenticatable implements JWTSubject
         'email',
         'password',
         'address',
+        'birthday',
         'phone',
         'status',
         'fcm_token',
@@ -33,14 +34,14 @@ class Driver extends Authenticatable implements JWTSubject
 
     public function getJWTIdentifier()
     {
-      return $this->getKey();
+        return $this->getKey();
     }
 
     public function getJWTCustomClaims()
     {
-      return [
-        'email'=>$this->email,
-      ];
+        return [
+            'email' => $this->email,
+        ];
     }
     public function getUserNameAttribute()
     {
