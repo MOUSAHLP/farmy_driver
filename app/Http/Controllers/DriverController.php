@@ -67,6 +67,15 @@ class DriverController extends Controller
             'dataFetchedSuccessfully'
         );
     }
+    public function getHomePage()
+    {
+        $data = $this->driverService->getHomePage();
+
+        return $this->successResponse(
+            $data,
+            'dataFetchedSuccessfully'
+        );
+    }
     public function getLastFiveOrdersPending()
     {
         $data = $this->driverService->getLastFiveOrdersPending();

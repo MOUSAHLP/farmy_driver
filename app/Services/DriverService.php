@@ -9,10 +9,6 @@ use App\Models\Order;
 use App\Models\Driver;
 use App\Helpers\AuthHelper;
 use App\Http\Resources\OrderDetailResource;
-// use Barryvdh\DomPDF\Facade\Pdf;
-// use function Spatie\LaravelPdf\Support\pdf;
-use Spatie\Browsershot\Browsershot;
-use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 use PDF;
 
@@ -89,6 +85,22 @@ class DriverService
 
         return OrderResource::collection($orders);
     }
+
+    public function getHomePage()
+    {
+        $driver = AuthHelper::userAuth();
+        $driverName = $driver->first_name . " " . $driver->last_name;
+
+        $data = [];
+
+        $data["driverName"] = $driverName;
+        $data["driverRank"] = "متمرس";
+        $data["acceptanceRate"] = 90;
+        $data["orders"] = $this->getLastFiveOrdersPending();
+
+        return $data;
+    }
+
     public function getLastFiveOrdersPending()
     {
         $orders = Order::where('status', OrderStatus::Pending)

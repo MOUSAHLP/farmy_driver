@@ -29,6 +29,7 @@ Route::group(['middleware' => 'lang'], function () {
         Route::get('/accept-order/{order_id}', [DriverController::class, 'acceptOrderByDriver']);
         Route::get('/generate-pdf-all-orders', [DriverController::class, 'generatePdfAllOrdersForDriver']);
 
+        Route::get('/get_home', [DriverController::class, 'getHomePage']);
         Route::get('/orders', [DriverController::class, 'getLastFiveOrdersPending']);
         Route::get('/driver-orders', [OrderDetailController::class, 'getDriverOrders']);
         Route::get('/driver-orders/{order_id}',  [OrderDetailController::class, 'getDriverOrderDetail']);
@@ -41,7 +42,7 @@ Route::group(['middleware' => 'lang'], function () {
         Route::get('/get-orders-statistics', [DriverController::class, 'getOrdersStatistics']);
     });
 
-    // (Setting, Privacy, Conditions, FAQ, Who We Are)
+    // (Setting, Privacy, Conditions, FAQ, Who We Are, About The App)
     Route::get('/setting', [SettingController::class, 'getAppSettings']);
     Route::get('/policy', [SettingController::class, 'privacyAndPolicy']);
     Route::get('/conditions', [SettingController::class, 'conditionsAndRules']);

@@ -38,8 +38,8 @@ class UserAuthRequest extends FormRequest
     public function login()
     {
         return [
-            'email' => 'required|string|email',
-            // 'phone'    => 'required|numeric',
+            // 'email' => 'required|string|email',
+            'phone'    => 'required|numeric|min:9',
             'password' => 'required|string|min:6|max:30'
         ];
     }
