@@ -29,8 +29,6 @@ Route::group(['middleware' => 'lang'], function () {
         Route::get('/accept-order/{order_id}', [DriverController::class, 'acceptOrderByDriver']);
         Route::get('/generate-pdf-all-orders', [DriverController::class, 'generatePdfAllOrdersForDriver']);
 
-        Route::post('/asign-order-to-driver', [DriverController::class, 'asignOrderToDriver']); // core request
-        Route::delete('/delete-driver/{driver_id}', [DriverController::class, 'DeleteDriver']); // core request
 
         Route::get('/get_home', [DriverController::class, 'getHomePage']);
         Route::get('/orders', [DriverController::class, 'getLastFiveOrdersPending']);

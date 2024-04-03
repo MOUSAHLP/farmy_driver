@@ -11,7 +11,7 @@ return [
 
     'somethingwentwrong'             => 'Something Went Wrong',
 
-    'oNotFound'                 => 'Not Found',
+    'NotFound'                 => 'Not Found',
 
     //General errors
     'alreadyExist'                  => 'Already Exist',

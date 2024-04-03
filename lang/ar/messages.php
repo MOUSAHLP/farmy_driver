@@ -48,11 +48,4 @@ return [
     'Unauthorized'                   => 'لا تملك صلاحيات للقيام بهذا الإجراء',
     'Unauthenticated'                => 'الرجاء تسجيل الدخول اولاً',
 
-    // core asign order to driverd
-    'core'  => [
-        "asignError"  => 'لا يمكنك اسناد سائق لهذا الطلب',
-    ],
-
-
-
 ];
