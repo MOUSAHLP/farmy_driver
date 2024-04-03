@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\CoreRoutes;
 use App\Models\Setting;
-use App\Services\SettingService;
-use Illuminate\Http\Request;
+use App\Traits\CoreRequests;
 
 class SettingController extends Controller
 {
+    use CoreRequests;
     public function getAppSettings()
     {
 
@@ -21,21 +22,13 @@ class SettingController extends Controller
 
     public function PrivacyAndPolicy()
     {
-        return $this->successResponse(
-            [
-                'html' => view('privacy')->render(),
-            ],
-            'dataFetchedSuccessfully'
-        );
+        $response = $this->coreGetRequest(CoreRoutes::policy);
+        return  $response;
     }
     public function ConditionsAndRules()
     {
-        return $this->successResponse(
-            [
-                'html' => view('conditions')->render(),
-            ],
-            'dataFetchedSuccessfully'
-        );
+        $response = $this->coreGetRequest(CoreRoutes::conditions);
+        return  $response;
     }
     public function faqQuestions()
     {

@@ -18,20 +18,17 @@ class DriverRequest extends FormRequest
     public function rules()
     {
         return match ($this->route()->getActionMethod()) {
-            'updateDriverInfo'   =>  $this->getupdateDriverInfoRules(),
+            'asignOrderToDriver'   =>  $this->getasignOrderToDriverRules(),
         };
     }
 
-    public function getupdateDriverInfoRules()
+    public function getasignOrderToDriverRules()
     {
         return [
-            'id'                  => 'required|integer|exists:drivers,id',
-            'first_name'          => 'required|string|max:255',
-            'last_name'           => 'required|string|max:255',
-            'phone'               => 'required|numeric',
+            'driver_id'                  => 'required|integer|exists:drivers,id',
+            'order_id'                  => 'required|integer|exists:orders,id',
         ];
     }
-
 
     protected function failedValidation(Validator $validator)
     {

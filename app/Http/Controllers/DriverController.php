@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\OrderStatus;
 use App\Enums\StatisticsEnums;
 use App\Models\Driver;
 use App\Models\Order;
@@ -114,6 +115,48 @@ class DriverController extends Controller
         return $this->successResponse(
             $data,
             'dataFetchedSuccessfully'
+        );
+    }
+
+    public function asignOrderToDriver(DriverRequest $request)
+    {
+        // $validatedData = $request->validated();
+
+        $order = Order::find($request->order_id);
+
+        if ($order->status != OrderStatus::Pending) {
+            return $this->errorResponse(
+                'core.asignError',
+                400
+            );
+        }
+
+        $order->update([
+            "driver_id" => $request->order_id
+        ]);
+        // $order->save();
+
+        return $this->successResponse(
+            null,
+            'dataUpdatedSuccessfully'
+        );
+    }
+
+    public function DeleteDriver($driver_id)
+    {
+        $driver = Driver::find($driver_id);
+
+        if (!$driver) {
+            return $this->errorResponse(
+                'NotFound',
+                404
+            );
+        }
+
+        $driver->delete();
+        return $this->successResponse(
+            null,
+            'dataDeletedSuccessfully'
         );
     }
 }

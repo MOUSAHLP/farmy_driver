@@ -47,4 +47,9 @@ return [
 
     'Unauthorized'                   => 'You do not have permissions to perform this action',
     'Unauthenticated'                => 'PLease login first',
+
+    // core asign order to driverd
+    'core'  => [
+        "asignError"  => 'Can Not Asign A Driver To This Order',
+    ],
 ];
