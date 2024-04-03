@@ -32,38 +32,22 @@ class SettingController extends Controller
     }
     public function faqQuestions()
     {
-        return $this->successResponse(
-            [
-                'html' => view('faq_question')->render(),
-            ],
-            'dataFetchedSuccefully'
-        );
+        $response = $this->coreGetRequest(CoreRoutes::faq_questions);
+        return  $response;
     }
     public function whoWeAre()
     {
-        return $this->successResponse(
-            [
-                'html' => view('who_we_are')->render(),
-            ],
-            'dataFetchedSuccefully'
-        );
+        $response = $this->coreGetRequest(CoreRoutes::who_we_are);
+        return  $response;
     }
     public function useTerms()
     {
-        return $this->successResponse(
-            [
-                'html' => view('use_terms')->render(),
-            ],
-            'dataFetchedSuccefully'
-        );
+        $response = $this->coreGetRequest(CoreRoutes::use_terms);
+        return  $response;
     }
     public function aboutTheApp()
     {
-        return $this->successResponse(
-            [
-                'html' => view('about_the_app')->render(),
-            ],
-            'dataFetchedSuccefully'
-        );
+        $response = $this->coreGetRequest(CoreRoutes::about_the_app);
+        return  $response;
     }
 }

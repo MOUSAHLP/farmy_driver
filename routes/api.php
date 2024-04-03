@@ -26,17 +26,21 @@ Route::group(['middleware' => 'lang'], function () {
 
 
         Route::get('/driver-dues', [DriverController::class, 'getDriverDues']);
-        Route::get('/accept-order/{order_id}', [DriverController::class, 'acceptOrderByDriver']);
         Route::get('/generate-pdf-all-orders', [DriverController::class, 'generatePdfAllOrdersForDriver']);
 
-
+        // Home Page
         Route::get('/get_home', [DriverController::class, 'getHomePage']);
         Route::get('/orders', [DriverController::class, 'getLastFiveOrdersPending']);
+
         Route::get('/driver-orders', [OrderDetailController::class, 'getDriverOrders']);
         Route::get('/driver-orders/{order_id}',  [OrderDetailController::class, 'getDriverOrderDetail']);
         Route::put('/driver-orders/{order_id}', [OrderDetailController::class, 'updateDriverOrderDetail']);
 
         Route::get('/all-orders', [DriverController::class, 'getAllOrders']);
+
+        // Orders Actions
+        Route::get('/accept-order/{order_id}', [DriverController::class, 'acceptOrderByDriver']);
+        Route::get('/reject-order/{order_id}', [DriverController::class, 'rejectOrderByDriver']);
 
         // Orders History
         Route::get('/get-driver-orders-history', [DriverController::class, 'getOrdersHistory']);

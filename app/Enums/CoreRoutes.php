@@ -14,6 +14,7 @@ class CoreRoutes
     const faq_questions = '/faq_questions';
     const who_we_are = '/who_we_are';
     const about_the_app = '/about_the_app';
+    const use_terms = '/use_terms';
 
     // // Points
     // public static function UserStatistics()

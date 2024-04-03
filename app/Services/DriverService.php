@@ -50,6 +50,23 @@ class DriverService
         return  false;
     }
 
+    public function rejectOrderByDriver($order)
+    {
+        $driver_id = AuthHelper::userAuth()->id;
+
+        if ($order->driver_id == $driver_id) {
+
+            $order->driver_id = null;
+
+            $order->status =  OrderStatus::Pending;
+            $order->save();
+
+            return  true;
+        }
+
+        return  false;
+    }
+
     public function generatePdfAllOrdersForDriver()
     {
         $data["orders"] = $this->getAllOrders();
@@ -104,6 +121,7 @@ class DriverService
     public function getLastFiveOrdersPending()
     {
         $orders = Order::where('status', OrderStatus::Pending)
+            ->where('driver_id', null)
             ->orderBy('created_at', 'Desc')
             ->take(5)->with('userAddress')->get();
 

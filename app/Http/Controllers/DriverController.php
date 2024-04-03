@@ -53,6 +53,30 @@ class DriverController extends Controller
         }
     }
 
+    public function rejectOrderByDriver($order_id)
+    {
+        $order = Order::find($order_id);
+        if (!$order) {
+            return $this->errorResponse(
+                "orders.NotFound",
+                404
+            );
+        }
+
+        $res = $this->driverService->rejectOrderByDriver($order);
+
+        if ($res) {
+            return $this->successResponse(
+                null,
+                'orders.Rejected'
+            );
+        } else {
+            return $this->errorResponse(
+                "orders.Already_Rejected",
+                404
+            );
+        }
+    }
 
     public function generatePdfAllOrdersForDriver()
     {

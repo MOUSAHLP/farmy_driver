@@ -48,4 +48,11 @@ return [
     'Unauthorized'                   => 'لا تملك صلاحيات للقيام بهذا الإجراء',
     'Unauthenticated'                => 'الرجاء تسجيل الدخول اولاً',
 
+    //orders
+    "orders" => [
+        "NotFound" => "الطلب غير موجودة",
+        "Accepted" => "تم قبول الطلب",
+        "Already_Accepted" => "الطلب تم قبوله مسبقا",
+    ],
+
 ];

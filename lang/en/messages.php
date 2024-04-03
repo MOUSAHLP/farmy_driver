@@ -48,8 +48,16 @@ return [
     'Unauthorized'                   => 'You do not have permissions to perform this action',
     'Unauthenticated'                => 'PLease login first',
 
-    // core asign order to driverd
-    'core'  => [
-        "asignError"  => 'Can Not Asign A Driver To This Order',
+    //orders
+    "orders" => [
+        "NotFound" => "Order Not Found",
+
+        // Accept
+        "Accepted" => "Order is Accepted",
+        "Already_Accepted" => "The Order Has Already Been Accepted",
+
+        // Reject
+        "Rejected" => "Order is Rejected",
+        "Already_Rejected" => "The Order Has Already Been Rejected",
     ],
 ];
