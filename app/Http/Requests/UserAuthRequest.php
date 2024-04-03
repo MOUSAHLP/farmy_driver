@@ -39,7 +39,7 @@ class UserAuthRequest extends FormRequest
     {
         return [
             // 'email' => 'required|string|email',
-            'phone'    => 'required|numeric|min:9',
+            'phone'    => 'required|numeric|min_digits:9|max_digits:9',
             'password' => 'required|string|min:6|max:30'
         ];
     }
@@ -51,7 +51,7 @@ class UserAuthRequest extends FormRequest
             'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:drivers',
             'password' => 'required|string|min:6',
-            'phone' => 'required|min:9',
+            'phone' => 'required|numeric|min_digits:9|max_digits:9',
         ];
     }
 
