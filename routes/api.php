@@ -48,6 +48,7 @@ Route::group(['middleware' => 'lang'], function () {
     Route::get('/faq_questions', [SettingController::class, 'faqQuestions']);
     Route::get('/who_we_are', [SettingController::class, 'whoWeAre']);
     Route::get('/use_terms', [SettingController::class, 'useTerms']);
+    Route::get('/about_the_app', [SettingController::class, 'aboutTheApp']);
 
     //// contact us
     Route::post('contact_us', [ContactUsController::class, 'contact_us']);

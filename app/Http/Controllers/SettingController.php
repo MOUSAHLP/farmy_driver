@@ -64,4 +64,13 @@ class SettingController extends Controller
             'dataFetchedSuccefully'
         );
     }
+    public function aboutTheApp()
+    {
+        return $this->successResponse(
+            [
+                'html' => view('about_the_app')->render(),
+            ],
+            'dataFetchedSuccefully'
+        );
+    }
 }
