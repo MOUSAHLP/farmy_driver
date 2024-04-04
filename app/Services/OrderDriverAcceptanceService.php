@@ -89,6 +89,9 @@ class OrderDriverAcceptanceService
 
         DB::commit();
 
+        if ($allOrderDriver == 0)
+            return 0;
+
         return ($orderDriverRate / $allOrderDriver) * 100;
     }
 }

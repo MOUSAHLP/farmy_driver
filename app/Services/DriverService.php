@@ -11,6 +11,7 @@ use App\Models\Driver;
 use App\Helpers\AuthHelper;
 use App\Http\Resources\OrderDetailResource;
 use App\Models\OrderDriverAcceptance;
+use App\Models\Rank;
 use Carbon\Carbon;
 use PDF;
 
@@ -149,7 +150,15 @@ class DriverService
         $orders = Order::where('status', OrderStatus::Pending)
             ->where('driver_id', null)
             ->orderBy('created_at', 'Desc')
-            ->take(5)->with('userAddress')->get();
+            ->with('userAddress')
+            ->get()
+            ->map(function ($model) {
+                $model->priority = Rank::getUserCurrentRank($model->user_id)->features["priority"];
+                return $model;
+            })->sortBy(function ($model) {
+                return $model->priority;
+            })->values()
+            ->take(5);
 
         return OrderResource::collection($orders);
     }
