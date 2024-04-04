@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\AcceptanceEnums;
 use App\Enums\OrderStatus;
 use App\Enums\StatisticsEnums;
 use App\Http\Resources\OrderResource;
@@ -127,15 +128,17 @@ class DriverService
         $driverName = $driver->first_name . " " . $driver->last_name;
         $data["driver_name"] = $driverName;
 
+        $query = Order::where("driver_id", $driver->id);
 
-        $asignedOrders = Order::where([["driver_id", $driver->id], ["status", OrderStatus::Pending]])->get();
+        $allOrderDriver = $query->count();
+        $data["driver_rank"] = AcceptanceEnums::getRate($allOrderDriver, request('lang') == true);
+
+        $asignedOrders = $query->where("status", OrderStatus::Pending)->get();
         $data["asigned_orders"] = $asignedOrders;
 
         $acceptanceRate =  $this->orderDriverAcceptanceService->getDriverRate($driver->id);
         $data["acceptance_rate"] = $acceptanceRate;
 
-        $data["driver_rank"] = "متمرس";
-        
         $data["orders"] = $this->getLastFiveOrdersPending();
 
         return $data;
