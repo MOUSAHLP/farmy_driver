@@ -9,12 +9,18 @@ use App\Models\Order;
 use App\Models\Driver;
 use App\Helpers\AuthHelper;
 use App\Http\Resources\OrderDetailResource;
+use App\Models\OrderDriverAcceptance;
 use Carbon\Carbon;
 use PDF;
 
 
 class DriverService
 {
+
+    public function __construct(private OrderDriverAcceptanceService $orderDriverAcceptanceService)
+    {
+    }
+
     public function getDriverDues()
     {
         $driver_id = AuthHelper::userAuth()->id;
@@ -44,6 +50,11 @@ class DriverService
             $order->status =  OrderStatus::Confirmed;
             $order->save();
 
+            $this->orderDriverAcceptanceService->createAccept([
+                'order_id' => $order->id,
+                'driver_id' => $driver_id,
+            ]);
+
             return  true;
         }
 
@@ -60,6 +71,11 @@ class DriverService
 
             $order->status =  OrderStatus::Pending;
             $order->save();
+
+            $this->orderDriverAcceptanceService->createReject([
+                'order_id' => $order->id,
+                'driver_id' => $driver_id,
+            ]);
 
             return  true;
         }
@@ -106,13 +122,20 @@ class DriverService
     public function getHomePage()
     {
         $driver = AuthHelper::userAuth();
-        $driverName = $driver->first_name . " " . $driver->last_name;
-
         $data = [];
 
-        $data["driverName"] = $driverName;
-        $data["driverRank"] = "متمرس";
-        $data["acceptanceRate"] = 90;
+        $driverName = $driver->first_name . " " . $driver->last_name;
+        $data["driver_name"] = $driverName;
+
+
+        $asignedOrders = Order::where([["driver_id", $driver->id], ["status", OrderStatus::Pending]])->get();
+        $data["asigned_orders"] = $asignedOrders;
+
+        $acceptanceRate =  $this->orderDriverAcceptanceService->getDriverRate($driver->id);
+        $data["acceptance_rate"] = $acceptanceRate;
+
+        $data["driver_rank"] = "متمرس";
+        
         $data["orders"] = $this->getLastFiveOrdersPending();
 
         return $data;
