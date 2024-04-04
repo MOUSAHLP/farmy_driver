@@ -131,7 +131,7 @@ class DriverService
         $query = Order::where("driver_id", $driver->id);
 
         $allOrderDriver = $query->count();
-        $data["driver_rank"] = AcceptanceEnums::getRate($allOrderDriver, request('lang') == true);
+        $data["driver_rank"] = AcceptanceEnums::getRate($allOrderDriver, request('lang') == "ar");
 
         $asignedOrders = $query->where("status", OrderStatus::Pending)->get();
         $data["asigned_orders"] = $asignedOrders;
