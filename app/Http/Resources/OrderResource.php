@@ -15,10 +15,13 @@ class OrderResource extends JsonResource
     {
         $actionMethod = $request->route()->getActionMethod();
         return match ($actionMethod) {
+            'getHomePage' => $this->getHomeResource(),
+            'getLastFiveOrdersPending' => $this->getHomeResource(),
             'getDriverOrders' => $this->getgetDriverOrdersResource(),
             'getOrdersHistory' => $this->getOrdersHistoryResource(),
             'getAllOrders' => $this->getAllOrdersResource(),
             'generatePdfAllOrdersForDriver' => $this->getAllOrdersResource(),
+
             default => $this->defaultResource(),
         };
     }
@@ -62,6 +65,24 @@ class OrderResource extends JsonResource
             }),
             'rate' => $this->rate,
             'invoice' => $this->invoice
+        ];
+    }
+
+
+    public function getHomeResource()
+    {
+
+        $hour = Carbon::parse($this->created_at)->hour;
+        $time = $hour >= 12 ? "PM " . Carbon::parse($this->created_at)->subHours(12)->format('H:i')
+            : "AM " . Carbon::parse($this->created_at)->format('H:i');
+
+        return [
+            'id' => $this->id,
+            'order_number' => $this->order_number,
+            'location' => $this->userAddress ? $this->userAddress->address : null,
+            'status' => $this->status,
+            'date' =>  Carbon::parse($this->created_at)->format('d/m/y'),
+            'time' => $time,
         ];
     }
 

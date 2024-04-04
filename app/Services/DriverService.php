@@ -134,7 +134,7 @@ class DriverService
         $data["driver_rank"] = AcceptanceEnums::getRate($allOrderDriver, request('lang') == "ar");
 
         $asignedOrders = $query->where("status", OrderStatus::Pending)->get();
-        $data["asigned_orders"] = $asignedOrders;
+        $data["asigned_orders"] = OrderResource::collection($asignedOrders);
 
         $acceptanceRate =  $this->orderDriverAcceptanceService->getDriverRate($driver->id);
         $data["acceptance_rate"] = $acceptanceRate;
@@ -151,22 +151,7 @@ class DriverService
             ->orderBy('created_at', 'Desc')
             ->take(5)->with('userAddress')->get();
 
-        $data =  $orders->map(function ($order) {
-            $hour = Carbon::parse($order->created_at)->hour;
-            $time = $hour >= 12 ? "PM " . Carbon::parse($order->created_at)->subHours(12)->format('H:i')
-                : "AM " . Carbon::parse($order->created_at)->format('H:i');
-
-            return [
-                'id' => $order->id,
-                'order_number' => $order->order_number,
-                'location' => $order->userAddress ? $order->userAddress->address : null,
-                'status' => $order->status,
-                'date' =>  Carbon::parse($order->created_at)->format('d/m/y'),
-                'time' => $time,
-            ];
-        });
-
-        return $data;
+        return OrderResource::collection($orders);
     }
     public function getDriverOrders()
     {
