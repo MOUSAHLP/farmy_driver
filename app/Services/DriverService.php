@@ -87,9 +87,14 @@ class DriverService
 
     public function generatePdfAllOrdersForDriver()
     {
+        $driver = AuthHelper::userAuth();
+
         $data["orders"] = $this->getAllOrders();
         $pdf = Pdf::loadView('invoice', $data);
-        return $pdf->stream('document.pdf');
+
+        $now = Carbon::now()->format("Y_m_d_h_i_s");
+
+        return $pdf->download($driver->first_name . '_' . $driver->last_name . '_' . $now . '.pdf');
     }
 
     public function updateDriverInfo($driver_id, $data)
@@ -174,7 +179,6 @@ class DriverService
     }
     public function getDriverOrderDetail($order_id)
     {
-        $driver_id = AuthHelper::userAuth()->id;
 
         $orders = Order::where("id", $order_id)
             ->orderBy('created_at', 'Desc')
