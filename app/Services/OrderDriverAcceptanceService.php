@@ -6,6 +6,7 @@ use App\Models\OrderDriverAcceptance;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Traits\ModelHelper;
+use Carbon\Carbon;
 
 class OrderDriverAcceptanceService
 {
@@ -81,7 +82,8 @@ class OrderDriverAcceptanceService
 
         DB::beginTransaction();
 
-        $query = OrderDriverAcceptance::where("driver_id", $driverId);
+        $query = OrderDriverAcceptance::where("driver_id", $driverId)
+            ->whereMonth('created_at', Carbon::now()->month);
 
         $allOrderDriver = $query->count();
 
