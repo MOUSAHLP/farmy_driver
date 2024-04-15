@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\DriverController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderDetailController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingController;
@@ -39,8 +40,9 @@ Route::group(['middleware' => 'lang'], function () {
         Route::get('/all-orders', [DriverController::class, 'getAllOrders']);
 
         // Orders Actions
-        Route::get('/accept-order/{order_id}', [DriverController::class, 'acceptOrderByDriver']);
-        Route::get('/reject-order/{order_id}', [DriverController::class, 'rejectOrderByDriver']);
+        Route::get('/accept-order/{order_id}', [OrderController::class, 'acceptOrderByDriver']);
+        Route::get('/reject-order/{order_id}', [OrderController::class, 'rejectOrderByDriver']);
+        Route::get('/deliver-order/{order_id}', [OrderController::class, 'deliverOrderByDriver']);
 
         // Orders History
         Route::get('/get-driver-orders-history', [DriverController::class, 'getOrdersHistory']);

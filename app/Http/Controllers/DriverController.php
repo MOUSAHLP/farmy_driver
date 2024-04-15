@@ -82,6 +82,11 @@ class DriverController extends Controller
         }
     }
 
+    public function doneOrderByDriver($order_id)
+    {
+    }
+
+
     public function generatePdfAllOrdersForDriver()
     {
         $pdf = $this->driverService->generatePdfAllOrdersForDriver();

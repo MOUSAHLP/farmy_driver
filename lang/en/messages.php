@@ -51,6 +51,7 @@ return [
     //orders
     "orders" => [
         "NotFound" => "Order Not Found",
+        "OtherDriver" => "This Order Belongs To Another Driver",
 
         // Accept
         "Accepted" => "Order is Accepted",
@@ -59,5 +60,8 @@ return [
         // Reject
         "Rejected" => "Order is Rejected",
         "Already_Rejected" => "The Order Has Already Been Rejected",
+
+        // Delivered
+        "Delivered" => "Order is Delivered",
     ],
 ];

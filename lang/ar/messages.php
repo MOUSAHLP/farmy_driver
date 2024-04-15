@@ -51,8 +51,18 @@ return [
     //orders
     "orders" => [
         "NotFound" => "الطلب غير موجودة",
+        "OtherDriver" => "هذا الطلب يخص سائق اخر",
+
+        // Accept
         "Accepted" => "تم قبول الطلب",
         "Already_Accepted" => "الطلب تم قبوله مسبقا",
+
+        // Reject
+        "Rejected" => "تم رفض الطلب",
+        "Already_Rejected" => "الطلب تم رفضه مسبقا",
+
+        // Delivered
+        "Delivered" => "تم توصيل الطلب",
     ],
 
 ];
