@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\CoreRoutes;
 use App\Enums\OrderStatus;
 use App\Enums\StatisticsEnums;
+use App\Helpers\AuthHelper;
 use App\Models\Driver;
 use App\Models\Order;
 use App\Http\Requests\DriverRequest;
 use App\Services\DriverService;
+use App\Traits\CoreRequests;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class DriverController extends Controller
 {
+    use CoreRequests;
     public function __construct(private DriverService $driverService)
     {
     }
@@ -140,5 +144,21 @@ class DriverController extends Controller
             $data,
             'dataFetchedSuccessfully'
         );
+    }
+    public function getOrderTrackingUrl($order_id)
+    {
+        if (Order::find($order_id) == null) {
+            return $this->errorResponse(
+                'orders.NotFound',
+                400
+            );
+        }
+
+        $driverId = AuthHelper::userAuth()->id;
+
+        $response = $this->coreGetRequest(CoreRoutes::socketUrl());
+        $response->data = $response->data . '?order_id' . $order_id . "&driver_id=" . $driverId;
+
+        return  $response;
     }
 }

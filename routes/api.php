@@ -45,6 +45,9 @@ Route::group(['middleware' => 'lang'], function () {
         // Orders History
         Route::get('/get-driver-orders-history', [DriverController::class, 'getOrdersHistory']);
         Route::get('/get-orders-statistics', [DriverController::class, 'getOrdersStatistics']);
+
+        // Tracking Socket
+        Route::get('/order-tracking/{id}', [DriverController::class, 'getOrderTrackingUrl']);
     });
 
     // (Setting, Privacy, Conditions, FAQ, Who We Are, About The App)

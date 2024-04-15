@@ -16,10 +16,10 @@ class CoreRoutes
     const about_the_app = '/about_the_app';
     const use_terms = '/use_terms';
 
-    // // Points
-    // public static function UserStatistics()
-    // {
-    //     $userId = AuthHelper::userAuth()->id;
-    //     return '/points/user-statistics/' . $userId;
-    // }
+
+    // Socket Url
+    public static function socketUrl()
+    {
+        return '/order-tracking-base';
+    }
 }
