@@ -61,8 +61,20 @@ return [
         "Rejected" => "تم رفض الطلب",
         "Already_Rejected" => "الطلب تم رفضه مسبقا",
 
+        // Confirmed
+        "Confirmed" => ["title" => "تم قبول طلبك",
+                      "body"=>"تم قبول طلبك من قبل سائق"],
+
+        // On Delivery
+        "OrderOnWay" => ["title" => "طلبك قيد التوصيل",
+        "body"=>"طلبك الان قيد التوصيل"],
+
         // Delivered
         "Delivered" => "تم توصيل الطلب",
+
+        "OrderArrived" => ["title" => "تم وصول طلبك",
+                            "body"=>"تم وصول السائق الى المنطقة"],
+        
     ],
 
 ];
