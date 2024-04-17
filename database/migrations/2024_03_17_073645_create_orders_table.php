@@ -14,26 +14,36 @@ return new class extends Migration
     public function up()
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->integer('order_number')->default(1000);
-            $table->unsignedBigInteger('user_id')->index('orders_user_id_foreign');
-            $table->unsignedBigInteger('driver_id')->nullable()->index('orders_driver_id_foreign');
-            $table->tinyInteger('status');
-            $table->unsignedBigInteger('delivery_method_id')->index('orders_delivery_method_id_foreign');
-            $table->unsignedBigInteger('payment_method_id')->index('orders_payment_method_id_foreign');
-            $table->unsignedBigInteger('user_address_id')->index('orders_user_address_id_foreign');
+            $table->id();
+            $table->integer('order_number')->default(1000)->autoIncrement();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('driver_id')->nullable();
+            $table->integer('status');
+            $table->unsignedBigInteger('delivery_method_id');
+            $table->unsignedBigInteger('payment_method_id');
+            $table->unsignedBigInteger('user_address_id');
             $table->unsignedBigInteger('city_id')->nullable();
             $table->time('start_time')->nullable();
             $table->time('end_time')->nullable();
-            $table->double('latitude', null, 0)->nullable();
-            $table->double('longitude', null, 0)->nullable();
-            $table->boolean('payment_status')->default(false);
-            $table->double('total', null, 0)->default(0);
+            $table->double('latitude')->nullable();
+            $table->double('longitude')->nullable();
+            $table->boolean('payment_status')->default(0);
+            $table->double('coupon_discount')->default(0);
+            $table->double('delivery_fee')->default(0);
+            $table->double('sub_total')->default(0);
+            $table->double('total')->default(0);
             $table->date('date');
             $table->text('notes')->nullable();
-            $table->text('changes')->nullable();
+            $table->integer('rate')->default(0);
+            $table->text('change')->nullable();
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('delivery_method_id')->references('id')->on('delivery_methods')->onDelete('cascade');
+            $table->foreign('payment_method_id')->references('id')->on('payment_methods')->onDelete('cascade');
+            $table->foreign('user_address_id')->references('id')->on('user_addresses')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('driver_id')->references('id')->on('drivers')->onDelete('cascade');
         });
     }
 

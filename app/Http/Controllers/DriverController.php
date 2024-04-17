@@ -10,6 +10,7 @@ use App\Models\Driver;
 use App\Models\Order;
 use App\Http\Requests\DriverRequest;
 use App\Http\Requests\OrderDetailRequest;
+use App\Http\Resources\NotificationResource;
 use App\Services\DriverService;
 use App\Services\OrderDetailService;
 use App\Traits\CoreRequests;
@@ -119,5 +120,12 @@ class DriverController extends Controller
         $response->data = $response->data . '?order_id' . $order_id . "&driver_id=" . $driverId;
 
         return  $response;
+    }
+    public function getNotifications()
+    {
+        return $this->successResponse(
+            NotificationResource::collection(Driver::find(AuthHelper::userAuth()->id)->notifications()->get()),
+            'dataFetchedSuccessfully'
+        );
     }
 }
