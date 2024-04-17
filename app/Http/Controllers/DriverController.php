@@ -154,7 +154,8 @@ class DriverController extends Controller
     }
     public function getOrderTrackingUrl($order_id, OrderDetailRequest $request)
     {
-        if (Order::find($order_id) == null) {
+        $order = Order::find($order_id);
+        if ($order == null) {
             return $this->errorResponse(
                 'orders.NotFound',
                 400
@@ -162,6 +163,11 @@ class DriverController extends Controller
         }
         // change order detail status
         $this->orderDetailService->updateDriverOrderDetail($order_id, $request);
+
+        // change oder status
+        $order->update([
+            "status" => OrderStatus::OnDelivery
+        ]);
 
         $driverId = AuthHelper::userAuth()->id;
 
