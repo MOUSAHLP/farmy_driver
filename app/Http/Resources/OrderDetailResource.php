@@ -35,6 +35,7 @@ class OrderDetailResource extends JsonResource
             'payment_method' => $this->paymentMethod->name,
             'payment_status' => $this->payment_status,
             'coupon_discount' => $this->coupon_discount,
+            'tax' => $this->tax,
             'delivery_fee' => $this->delivery_fee,
             'sub_total' => $this->sub_total,
             'total' => $this->total,

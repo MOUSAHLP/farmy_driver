@@ -35,6 +35,8 @@ return [
     "building_number" => "رقم البناء",
     "floor" => "الطابق",
 
+    "pending" => "قيد الانتظار",
+
     //Auth msgs
     'passwordChangedSuccessfully'    => 'تم تغيير كلمة المرور بنجاح',
     'userSuccessfullyRegistered'     => 'تم تسجيل المستخدم بنجاح',
@@ -62,19 +64,25 @@ return [
         "Already_Rejected" => "الطلب تم رفضه مسبقا",
 
         // Confirmed
-        "Confirmed" => ["title" => "تم قبول طلبك",
-                      "body"=>"تم قبول طلبك من قبل سائق"],
+        "Confirmed" => [
+            "title" => "تم قبول طلبك",
+            "body" => "تم قبول طلبك من قبل سائق"
+        ],
 
         // On Delivery
-        "OrderOnWay" => ["title" => "طلبك قيد التوصيل",
-        "body"=>"طلبك الان قيد التوصيل"],
+        "OrderOnWay" => [
+            "title" => "طلبك قيد التوصيل",
+            "body" => "طلبك الان قيد التوصيل"
+        ],
 
         // Delivered
         "Delivered" => "تم توصيل الطلب",
 
-        "OrderArrived" => ["title" => "تم وصول طلبك",
-                            "body"=>"تم وصول السائق الى المنطقة"],
-        
+        "OrderArrived" => [
+            "title" => "تم وصول طلبك",
+            "body" => "تم وصول السائق الى المنطقة"
+        ],
+
     ],
 
 ];

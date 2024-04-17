@@ -80,7 +80,7 @@ class OrderResource extends JsonResource
             'id' => $this->id,
             'order_number' => $this->order_number,
             'location' => $this->userAddress ? $this->userAddress->address : null,
-            'status' => $this->status,
+            'status' => __("messages.pending"),
             'date' =>  Carbon::parse($this->created_at)->format('d/m/y'),
             'time' => $time,
         ];
