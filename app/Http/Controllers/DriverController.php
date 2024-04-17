@@ -33,62 +33,6 @@ class DriverController extends Controller
         );
     }
 
-    public function acceptOrderByDriver($order_id)
-    {
-
-        $order = Order::find($order_id);
-        if (!$order) {
-            return $this->errorResponse(
-                "orders.NotFound",
-                404
-            );
-        }
-
-        $res = $this->driverService->acceptOrderByDriver($order);
-
-        if ($res) {
-            return $this->successResponse(
-                null,
-                'orders.Accepted'
-            );
-        } else {
-            return $this->errorResponse(
-                "orders.Already_Accepted",
-                404
-            );
-        }
-    }
-
-    public function rejectOrderByDriver($order_id)
-    {
-        $order = Order::find($order_id);
-        if (!$order) {
-            return $this->errorResponse(
-                "orders.NotFound",
-                404
-            );
-        }
-
-        $res = $this->driverService->rejectOrderByDriver($order);
-
-        if ($res) {
-            return $this->successResponse(
-                null,
-                'orders.Rejected'
-            );
-        } else {
-            return $this->errorResponse(
-                "orders.Already_Rejected",
-                404
-            );
-        }
-    }
-
-    public function doneOrderByDriver($order_id)
-    {
-    }
-
-
     public function generatePdfAllOrdersForDriver()
     {
         $pdf = $this->driverService->generatePdfAllOrdersForDriver();
