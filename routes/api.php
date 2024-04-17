@@ -49,7 +49,7 @@ Route::group(['middleware' => 'lang'], function () {
         Route::get('/get-orders-statistics', [DriverController::class, 'getOrdersStatistics']);
 
         // Tracking Socket
-        Route::get('/order-tracking/{id}', [DriverController::class, 'getOrderTrackingUrl']);
+        Route::post('/order-tracking/{id}', [DriverController::class, 'getOrderTrackingUrl']);
     });
 
     // (Setting, Privacy, Conditions, FAQ, Who We Are, About The App)
