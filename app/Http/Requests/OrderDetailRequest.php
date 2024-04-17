@@ -18,6 +18,7 @@ class OrderDetailRequest extends FormRequest
     {
         return match ($this->route()->getActionMethod()) {
             'updateDriverOrderDetail'   =>  $this->getupdateDriverOrderDetailRules(),
+            'getOrderTrackingUrl'   =>  $this->getupdateDriverOrderDetailRules(),
         };
     }
 

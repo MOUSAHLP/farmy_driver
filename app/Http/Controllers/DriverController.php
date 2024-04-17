@@ -9,7 +9,9 @@ use App\Helpers\AuthHelper;
 use App\Models\Driver;
 use App\Models\Order;
 use App\Http\Requests\DriverRequest;
+use App\Http\Requests\OrderDetailRequest;
 use App\Services\DriverService;
+use App\Services\OrderDetailService;
 use App\Traits\CoreRequests;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -17,7 +19,7 @@ use Illuminate\Http\Request;
 class DriverController extends Controller
 {
     use CoreRequests;
-    public function __construct(private DriverService $driverService)
+    public function __construct(private DriverService $driverService, private OrderDetailService $orderDetailService)
     {
     }
 
@@ -150,7 +152,7 @@ class DriverController extends Controller
             'dataFetchedSuccessfully'
         );
     }
-    public function getOrderTrackingUrl($order_id)
+    public function getOrderTrackingUrl($order_id, OrderDetailRequest $request)
     {
         if (Order::find($order_id) == null) {
             return $this->errorResponse(
@@ -158,6 +160,8 @@ class DriverController extends Controller
                 400
             );
         }
+        // change order detail status
+        $this->orderDetailService->updateDriverOrderDetail($order_id, $request);
 
         $driverId = AuthHelper::userAuth()->id;
 
