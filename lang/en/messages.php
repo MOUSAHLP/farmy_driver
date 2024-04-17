@@ -60,8 +60,19 @@ return [
         // Reject
         "Rejected" => "Order is Rejected",
         "Already_Rejected" => "The Order Has Already Been Rejected",
+        
+        // Confirmed
+        "Confirmed" => ["title" => "Your Order Has Confirmed",
+                      "body"=>"Your Order Has Confirmed By A Driver"],
+
+        // On Delivery
+        "OrderOnWay" => ["title" => "Order On The Way",
+                      "body"=>"Your Order Now is On The Way"],
 
         // Delivered
         "Delivered" => "Order is Delivered",
+        
+        "OrderArrived" => ["title" => "Your Order Has Arrived",
+                            "body"=>"The Driver Has Arrived To Your Area"],
     ],
 ];

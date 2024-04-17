@@ -23,6 +23,11 @@ class DriverService
     {
     }
 
+    public function getDriversByIds($ids)
+    {
+        return Driver::whereIn('id', $ids)->get();
+    }
+
     public function getDriverDues()
     {
         $driver_id = AuthHelper::userAuth()->id;
@@ -41,48 +46,6 @@ class DriverService
         });
 
         return  ['driver_dues' => $dues, 'orders' => $data];
-    }
-
-    public function acceptOrderByDriver($order)
-    {
-        if ($order->driver_id == null && $order->status == OrderStatus::Pending) {
-            $driver_id = AuthHelper::userAuth()->id;
-
-            $order->driver_id = $driver_id;
-            $order->status =  OrderStatus::Confirmed;
-            $order->save();
-
-            $this->orderDriverAcceptanceService->createAccept([
-                'order_id' => $order->id,
-                'driver_id' => $driver_id,
-            ]);
-
-            return  true;
-        }
-
-        return  false;
-    }
-
-    public function rejectOrderByDriver($order)
-    {
-        $driver_id = AuthHelper::userAuth()->id;
-
-        if ($order->driver_id == $driver_id) {
-
-            $order->driver_id = null;
-
-            $order->status =  OrderStatus::Pending;
-            $order->save();
-
-            $this->orderDriverAcceptanceService->createReject([
-                'order_id' => $order->id,
-                'driver_id' => $driver_id,
-            ]);
-
-            return  true;
-        }
-
-        return  false;
     }
 
     public function generatePdfAllOrdersForDriver()
