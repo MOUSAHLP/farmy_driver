@@ -60,6 +60,7 @@ class OrderService
 
         if ($order->driver_id == $driver_id) {
 
+            $order->payment_status = 1;
             $order->status =  OrderStatus::Deliverd;
             $order->save();
 

@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Enums\NotificationsTypes;
 use App\Enums\OrderStatus;
+use App\Models\Notification;
 use App\Models\Order;
 use App\Traits\NotificationHelper;
 use Carbon\Carbon;
@@ -44,6 +45,12 @@ class OrderObserver
                 $fcm_token = Order::where("user_id", $order->user_id)->get()->first()->user->fcm_token;
 
                 NotificationHelper::sendPushNotification([$fcm_token], $data, NotificationsTypes::Orders);
+                Notification::create([
+                    'type'            =>  NotificationsTypes::PushNotifications,
+                    'notifiable_type' => 'App\Models\User',
+                    'notifiable_id'   => $order->user_id,
+                    'data'            => $data,
+                ]);
             }
         }
     }
