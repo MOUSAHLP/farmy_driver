@@ -14,8 +14,8 @@ class OrderDetailService
     public function getDriverOrders()
     {
         $driver_id = AuthHelper::userAuth()->id;
-
-        $orders = Order::where([['driver_id', $driver_id], ['status', [OrderStatus::Confirmed, OrderStatus::OnDelivery]]])
+        $orders = Order::where('driver_id', $driver_id)
+        ->whereIn('status', [OrderStatus::Confirmed, OrderStatus::OnDelivery])
             ->orderBy('created_at', 'Desc')
             ->get();
 
