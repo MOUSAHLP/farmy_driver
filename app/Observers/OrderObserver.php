@@ -11,24 +11,25 @@ use Carbon\Carbon;
 
 class OrderObserver
 {
-    public function updated(Order $order): void
+    public function updating(Order $order): void
     {
 
         if ($order->getOriginal()["status"] != $order->status && $order->status != OrderStatus::Pending) {
-
-            if ($order->status == OrderStatus::Confirmed) {
+            $data = [];
+            if ($order->status == OrderStatus::Confirmed && !$order->isDirty('confirmed_at')) {
                 $data = [
                     "title" => __('messages.orders.Confirmed.title'),
                     "body" => __('messages.orders.Confirmed.body'),
                 ];
                 $order->confirmed_at = Carbon::now();
                 $order->save();
-            } else  if ($order->status == OrderStatus::OnDelivery) {
+            } else
+            if ($order->status == OrderStatus::OnDelivery) {
                 $data = [
                     "title" => __('messages.orders.OrderOnWay.title'),
                     "body" => __('messages.orders.OrderOnWay.body'),
                 ];
-            } else if ($order->status == OrderStatus::Deliverd) {
+            } else if ($order->status == OrderStatus::Deliverd && !$order->isDirty('delivered_at')) {
                 $data = [
                     "title" => __('messages.orders.OrderArrived.title'),
                     "body" => __('messages.orders.OrderArrived.body'),
@@ -37,7 +38,12 @@ class OrderObserver
                 $order->save();
             }
 
-            if ($order->status != OrderStatus::Pending && $order->status != OrderStatus::Cancelled && $order->status != OrderStatus::Returned) {
+            if (
+                $order->status != OrderStatus::Pending &&
+                $order->status != OrderStatus::Cancelled &&
+                $order->status != OrderStatus::Returned &&
+                isset($data["title"])
+            ) {
                 $data["order_id"] = $order->id;
                 $data["order_status"] = $order->status;
                 $data["driver_phone"] = $order->driver->phone;
