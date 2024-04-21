@@ -117,7 +117,7 @@ class DriverController extends Controller
         $driverId = AuthHelper::userAuth()->id;
 
         $response = $this->coreGetRequest(CoreRoutes::socketUrl());
-        $response->data = $response->data . '?order_id' . $order_id . "&driver_id=" . $driverId;
+        $response->data = $response->data . '?order_id=' . $order_id . "&driver_id=" . $driverId;
 
         return  $response;
     }
