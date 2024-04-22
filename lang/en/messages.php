@@ -48,7 +48,7 @@ return [
     'Unauthorized'                   => 'You do not have permissions to perform this action',
     'Unauthenticated'                => 'PLease login first',
 
-    "pending"=>"pending",
+    "pending" => "pending",
 
     //orders
     "orders" => [
@@ -64,17 +64,31 @@ return [
         "Already_Rejected" => "The Order Has Already Been Rejected",
 
         // Confirmed
-        "Confirmed" => ["title" => "Your Order Has Confirmed",
-                      "body"=>"Your Order Has Confirmed By A Driver"],
+        "Confirmed" => [
+            "title" => "Your Order Has Confirmed",
+            "body" => "Your Order Has Confirmed By A Driver"
+        ],
 
         // On Delivery
-        "OrderOnWay" => ["title" => "Order On The Way",
-                      "body"=>"Your Order Now is On The Way"],
+        "OrderOnWay" => [
+            "title" => "Order On The Way",
+            "body" => "Your Order Now is On The Way"
+        ],
 
         // Delivered
         "Delivered" => "Order is Delivered",
 
-        "OrderArrived" => ["title" => "Your Order Has Arrived",
-                            "body"=>"The Driver Has Arrived To Your Area"],
+        "OrderArrived" => [
+            "title" => "Your Order Has Arrived",
+            "body" => "The Driver Has Arrived To Your Area"
+        ],
+    ],
+    // reward notifications
+    'reward_notifications'  => [
+        "user_created"  => "for signing up in our app",
+        "user_birthday_added"  => "for adding your birthday in your account",
+        "order_rated"  => "for rating an order",
+        "order_created"  => "for creating an order",
+
     ],
 ];

@@ -3,9 +3,14 @@
 namespace App\Traits;
 
 use App\Enums\NotificationsTypes;
+use App\Enums\RewardRoutes;
+use App\Models\User;
+use App\Traits\RewardRequests;
 
 class NotificationHelper
 {
+    use RewardRequests;
+
     public static function sendPushNotification(array $fcmTokens, array $data, $type): string
     {
         $url = "https://fcm.googleapis.com/fcm/send";
@@ -84,7 +89,7 @@ class NotificationHelper
 
     private static function buildPayload(string $fcmToken, array $data): string
     {
-    
+
         $payload = [
             "to" => $fcmToken,
             "data" => $data,
@@ -95,17 +100,30 @@ class NotificationHelper
         ];
         return json_encode($payload);
     }
-    public static function getTranslatedData(int $points , string $reason): array
+    public static function getTranslatedData(int $points, string $reason): array
     {
-        if(app()->getLocale() == "ar"){
+        if (app()->getLocale() == "ar") {
             return [
                 "title" => "تم اضافة " .  $points . " نقطة لحسابك",
-                "body" => "تم اضافة " .  $points . " نقطة لحسابك ".__("messages.reward_notifications.".$reason),
+                "body" => "تم اضافة " .  $points . " نقطة لحسابك " . __("messages.reward_notifications." . $reason),
             ];
         }
         return [
-            "title" => $points ." points have been added to your account",
-            "body" => __("messages.reward_notifications.".$reason),
+            "title" => $points . " points have been added to your account",
+            "body" => __("messages.reward_notifications." . $reason),
         ];
+    }
+
+    public static function add_points_for_creating_order($order)
+    {
+        RewardRequests::rewardPostRequest(RewardRoutes::add_points_to_user, [
+            "user_id" => $order->user_id,
+            "points" => (int) floor($order->total / 1000),
+            "achievement_id" => 5
+        ]);
+        $fcm_token = User::where("id", $order->user_id)->get()->first()->fcm_token;
+        $data = NotificationHelper::getTranslatedData((int) floor($order->total / 1000), "order_created");
+
+        NotificationHelper::sendPushNotification([$fcm_token], $data, NotificationsTypes::Offers);
     }
 }

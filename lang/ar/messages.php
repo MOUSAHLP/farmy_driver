@@ -84,5 +84,12 @@ return [
         ],
 
     ],
+    // reward notifications
+    'reward_notifications'  => [
+        "user_created"  => "لانشائك حساب بتطبيقنا",
+        "user_birthday_added"  => "لاضافة تاريخ ميلادك على حسابك",
+        "order_rated"  => "لتقييمك طلب",
+        "order_created"  => "لاتمامك طلب",
 
+    ],
 ];

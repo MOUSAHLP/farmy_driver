@@ -8,9 +8,12 @@ use App\Models\Notification;
 use App\Models\Order;
 use App\Traits\NotificationHelper;
 use Carbon\Carbon;
+use App\Traits\RewardRequests;
 
 class OrderObserver
 {
+    use RewardRequests;
+
     public function updating(Order $order): void
     {
 
@@ -30,6 +33,9 @@ class OrderObserver
                     "body" => __('messages.orders.OrderOnWay.body'),
                 ];
             } else if ($order->status == OrderStatus::Deliverd && !$order->isDirty('delivered_at')) {
+
+                NotificationHelper::add_points_for_creating_order($order);
+
                 $data = [
                     "title" => __('messages.orders.OrderArrived.title'),
                     "body" => __('messages.orders.OrderArrived.body'),
