@@ -16,7 +16,6 @@ class OrderObserver
 
     public function updating(Order $order): void
     {
-
         if ($order->getOriginal()["status"] != $order->status && $order->status != OrderStatus::Pending) {
             $data = [];
             if ($order->status == OrderStatus::Confirmed && !$order->isDirty('confirmed_at')) {
