@@ -43,6 +43,7 @@ Route::group(['middleware' => 'lang'], function () {
         Route::get('/accept-order/{order_id}', [OrderController::class, 'acceptOrderByDriver']);
         Route::get('/reject-order/{order_id}', [OrderController::class, 'rejectOrderByDriver']);
         Route::get('/deliver-order/{order_id}', [OrderController::class, 'deliverOrderByDriver']);
+        Route::get('/accept-assigned-order/{order_id}', [OrderController::class, 'acceptAssignedOrderByDriver']);
 
         // Orders History
         Route::get('/get-driver-orders-history', [DriverController::class, 'getOrdersHistory']);

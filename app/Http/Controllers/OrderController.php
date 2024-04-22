@@ -88,4 +88,30 @@ class OrderController extends Controller
             );
         }
     }
+
+    public function acceptAssignedOrderByDriver($order_id)
+    {
+
+        $order = Order::find($order_id);
+        if (!$order) {
+            return $this->errorResponse(
+                "orders.NotFound",
+                404
+            );
+        }
+
+        $res = $this->orderService->acceptAssignedOrderByDriver($order);
+
+        if ($res) {
+            return $this->successResponse(
+                null,
+                'orders.Accepted'
+            );
+        } else {
+            return $this->errorResponse(
+                "orders.Already_Accepted",
+                404
+            );
+        }
+    }
 }

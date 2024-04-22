@@ -69,4 +69,23 @@ class OrderService
 
         return  false;
     }
+
+    public function acceptAssignedOrderByDriver($order)
+    {
+        $driver_id = AuthHelper::userAuth()->id;
+        if ($order->status == OrderStatus::Pending && $order->driver_id == $driver_id) {
+
+            $order->status =  OrderStatus::Confirmed;
+            $order->save();
+
+            $this->orderDriverAcceptanceService->createAccept([
+                'order_id' => $order->id,
+                'driver_id' => $driver_id,
+            ]);
+
+            return  true;
+        }
+
+        return  false;
+    }
 }
