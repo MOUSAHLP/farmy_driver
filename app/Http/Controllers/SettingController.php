@@ -14,6 +14,7 @@ class SettingController extends Controller
 
         $settings = Setting::get(["id", "baseUrl", "version", "phone"])->first();
         $settings->update_time = config('constant.update_time');
+        $settings->tracking_time = config('constant.tracking_time');
         return $this->successResponse(
             $settings,
             'dataFetchedSuccessfully'

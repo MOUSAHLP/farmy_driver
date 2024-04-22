@@ -123,8 +123,12 @@ class DriverController extends Controller
     }
     public function getNotifications()
     {
+        $notifications = Driver::find(AuthHelper::userAuth()->id)->notifications();
+        if (request()->has('type')) {
+            $notifications->where('type', request()->type);
+        }
         return $this->successResponse(
-            NotificationResource::collection(Driver::find(AuthHelper::userAuth()->id)->notifications()->get()),
+            NotificationResource::collection($notifications->get()),
             'dataFetchedSuccessfully'
         );
     }
