@@ -107,7 +107,7 @@ class DriverController extends Controller
             );
         }
         // change order detail status
-        $this->orderDetailService->updateDriverOrderDetail($order_id, $request);
+        $this->orderDetailService->updateDriverOrderDetail($order, $request);
 
         // change oder status
         $order->update([

@@ -24,11 +24,13 @@ class Order extends Model
         'longitude',
         'payment_status',
         'coupon_discount',
+        'tax',
         'delivery_fee',
         'sub_total',
         'total',
         'date',
         'notes',
+        'reason_for_cancel',
         'changes',
         'rate',
         'confirmed_at',
@@ -49,6 +51,7 @@ class Order extends Model
         'longitude'          => 'integer',
         'payment_status'     => 'boolean',
         'coupon_discount'    => 'double',
+        'tax'                => 'double',
         'delivery_fee'       => 'double',
         'sub_total'          => 'double',
         'total'              => 'double',
@@ -70,6 +73,11 @@ class Order extends Model
     public function orderDetails()
     {
         return $this->hasMany(OrderDetail::class);
+    }
+
+    public function rateAttributes()
+    {
+        return $this->hasMany(OrderRateAttribute::class);
     }
 
     public function deliveryMethod()

@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Helpers\AuthHelper;
 use App\Http\Resources\OrderDetailResource;
 use App\Models\OrderDetail;
+use App\Traits\InvoiceHelper;
 
 class OrderDetailService
 {
@@ -15,7 +16,7 @@ class OrderDetailService
     {
         $driver_id = AuthHelper::userAuth()->id;
         $orders = Order::where('driver_id', $driver_id)
-        ->whereIn('status', [OrderStatus::Confirmed, OrderStatus::OnDelivery])
+            ->whereIn('status', [OrderStatus::Confirmed, OrderStatus::OnDelivery])
             ->orderBy('created_at', 'Desc')
             ->get();
 
@@ -29,7 +30,7 @@ class OrderDetailService
 
         return new OrderDetailResource($orders);
     }
-    public function updateDriverOrderDetail($order_id, $request)
+    public function updateDriverOrderDetail($order, $request)
     {
         OrderDetail::whereIn("id", $request->approved_products_ids)
             ->update([
@@ -39,5 +40,7 @@ class OrderDetailService
             ->update([
                 "status" => 0
             ]);
+        $data =  InvoiceHelper::calculateInvoice($order);
+        $order->update($data);
     }
 }

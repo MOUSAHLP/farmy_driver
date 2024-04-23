@@ -69,7 +69,20 @@ class OrderService
 
         return  false;
     }
+    public function makeOrderPaid($order)
+    {
+        $driver_id = AuthHelper::userAuth()->id;
 
+        if ($order->driver_id == $driver_id) {
+
+            $order->payment_status = 1;
+            $order->save();
+
+            return  true;
+        }
+
+        return  false;
+    }
     public function acceptAssignedOrderByDriver($order)
     {
         $driver_id = AuthHelper::userAuth()->id;

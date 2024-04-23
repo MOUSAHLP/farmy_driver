@@ -69,6 +69,9 @@ return [
             "body" => "Your Order Has Confirmed By A Driver"
         ],
 
+        // make paid
+        "Paid" => "The Order Was Made Paid",
+
         // On Delivery
         "OrderOnWay" => [
             "title" => "Order On The Way",

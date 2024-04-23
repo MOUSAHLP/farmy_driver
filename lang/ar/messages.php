@@ -78,6 +78,10 @@ return [
         // Delivered
         "Delivered" => "تم توصيل الطلب",
 
+        // make paid
+        "Paid" => "تم جعل الطلب مدفوع",
+        "PaidError" => "حدث خطأ جعل الطلب مدفوع",
+
         "OrderArrived" => [
             "title" => "تم وصول طلبك",
             "body" => "تم وصول السائق الى المنطقة"
