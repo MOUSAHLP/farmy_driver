@@ -107,6 +107,8 @@ class DriverService
         $driverName = $driver->first_name . " " . $driver->last_name;
         $data["driver_name"] = $driverName;
 
+        $data["is_active"] = (bool) $driver->online_status;
+
         $query = Order::where("driver_id", $driver->id);
 
         $allOrderDriver = $query->count();
