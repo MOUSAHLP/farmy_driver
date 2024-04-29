@@ -54,6 +54,7 @@ return [
     "orders" => [
         "NotFound" => "Order Not Found",
         "OtherDriver" => "This Order Belongs To Another Driver",
+        "Already_Paid" => "The Order Has Already Been Made Paid",
 
         // Accept
         "Accepted" => "Order is Accepted",

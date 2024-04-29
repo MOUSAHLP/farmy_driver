@@ -54,6 +54,7 @@ return [
     "orders" => [
         "NotFound" => "الطلب غير موجودة",
         "OtherDriver" => "هذا الطلب يخص سائق اخر",
+        "Already_Paid" => "الطلب تم جعله مدفوع مسبقا",
 
         // Accept
         "Accepted" => "تم قبول الطلب",

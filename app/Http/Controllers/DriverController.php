@@ -39,6 +39,7 @@ class DriverController extends Controller
         $pdf = $this->driverService->generatePdfAllOrdersForDriver();
         return $pdf;
     }
+
     public function getAllOrders()
     {
         $data = $this->driverService->getAllOrders();
@@ -66,6 +67,16 @@ class DriverController extends Controller
             'dataFetchedSuccessfully'
         );
     }
+    public function make_active_inactive()
+    {
+        $data = $this->driverService->getLastFiveOrdersPending();
+
+        return $this->successResponse(
+            $data,
+            'dataFetchedSuccessfully'
+        );
+    }
+
     public function getOrdersHistory()
     {
         $data = $this->driverService->getOrdersHistory();

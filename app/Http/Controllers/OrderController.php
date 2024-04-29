@@ -104,7 +104,7 @@ class OrderController extends Controller
             );
         } else {
             return $this->errorResponse(
-                "orders.OtherDriver",
+                "orders.Already_Paid",
                 400
             );
         }

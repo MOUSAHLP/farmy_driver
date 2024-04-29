@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\AcceptanceEnums;
+use App\Enums\DriverTypes;
 use App\Enums\OrderStatus;
 use App\Enums\StatisticsEnums;
 use App\Http\Resources\OrderResource;
@@ -32,7 +33,8 @@ class DriverService
     {
         $driver_id = AuthHelper::userAuth()->id;
 
-        $dues = Order::where([['driver_id', $driver_id]])->sum('delivery_fee');
+        $delivery_fee = Order::where([['driver_id', $driver_id]])->sum('delivery_fee');
+        $dues = $this->calculateDriverDues($driver_id, $delivery_fee);
 
         $orders = Order::where([['driver_id', $driver_id], ['status', OrderStatus::Deliverd]])
             ->orderBy('created_at', 'Desc')
@@ -47,7 +49,15 @@ class DriverService
 
         return  ['driver_dues' => $dues, 'orders' => $data];
     }
-
+    public function calculateDriverDues($driver_id, $delivery_fee_sum)
+    {
+        $driver_type = Driver::with("type")->find($driver_id)->type;
+        if ($driver_type["type"] == DriverTypes::Salary) {
+            return $driver_type["value"];
+        } elseif ($driver_type["type"] == DriverTypes::Commission) {
+            return $delivery_fee_sum * $driver_type["value"] / 100;
+        }
+    }
     public function generatePdfAllOrdersForDriver()
     {
         $driver = AuthHelper::userAuth();
@@ -130,6 +140,10 @@ class DriverService
 
         return OrderResource::collection($orders);
     }
+//     public function make_active_inactive($order_id)
+// {
+
+// }
 
     public function getDriverOrderDetail($order_id)
     {

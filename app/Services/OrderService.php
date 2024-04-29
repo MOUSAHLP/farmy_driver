@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Enums\OrderStatus;
 use App\Helpers\AuthHelper;
+use App\Models\Product;
 
 class OrderService
 {
@@ -73,15 +74,28 @@ class OrderService
     {
         $driver_id = AuthHelper::userAuth()->id;
 
-        if ($order->driver_id == $driver_id) {
+        if ($order->payment_status == 1) {
 
             $order->payment_status = 1;
             $order->save();
-
+            $this->decreaseProductsQuantity($order);
             return  true;
         }
 
         return  false;
+    }
+    public function decreaseProductsQuantity($order)
+    {
+        foreach ($order->orderDetails as $orderDetail) {
+            if ($orderDetail->status) {
+                $product = Product::find($orderDetail->product_id);
+                $product->decrement('quantity', $orderDetail->quantity);
+                if ($product->quantity < 0) {
+                    $product->quantity = 0;
+                    $product->save();
+                }
+            }
+        }
     }
     public function acceptAssignedOrderByDriver($order)
     {
