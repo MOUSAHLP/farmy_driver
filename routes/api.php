@@ -32,7 +32,7 @@ Route::group(['middleware' => 'lang'], function () {
         // Home Page
         Route::get('/get_home', [DriverController::class, 'getHomePage']);
         Route::get('/orders', [DriverController::class, 'getLastFiveOrdersPending']);
-        // Route::get('/active-inactive', [DriverController::class, 'make_active_inactive']);
+        Route::post('/active-inactive', [DriverController::class, 'make_active_inactive']);
 
         Route::get('/driver-orders', [OrderDetailController::class, 'getDriverOrders']);
         Route::get('/driver-orders/{order_id}',  [OrderDetailController::class, 'getDriverOrderDetail']);

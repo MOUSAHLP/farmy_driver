@@ -140,10 +140,13 @@ class DriverService
 
         return OrderResource::collection($orders);
     }
-//     public function make_active_inactive($order_id)
-// {
-
-// }
+    public function make_active_inactive($online_status)
+    {
+        $driver = Driver::find(AuthHelper::userAuth()->id);
+        $driver->update([
+            "online_status" => $online_status
+        ]);
+    }
 
     public function getDriverOrderDetail($order_id)
     {

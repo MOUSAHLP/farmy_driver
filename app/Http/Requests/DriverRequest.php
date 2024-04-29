@@ -18,9 +18,15 @@ class DriverRequest extends FormRequest
     public function rules()
     {
         return match ($this->route()->getActionMethod()) {
+            "make_active_inactive" => $this->get_make_active_inactive_rules(),
         };
     }
-
+    public function get_make_active_inactive_rules()
+    {
+        return [
+            'online_status' => 'required|boolean',
+        ];
+    }
 
 
     protected function failedValidation(Validator $validator)

@@ -67,13 +67,13 @@ class DriverController extends Controller
             'dataFetchedSuccessfully'
         );
     }
-    public function make_active_inactive()
+    public function make_active_inactive(DriverRequest $request)
     {
-        $data = $this->driverService->getLastFiveOrdersPending();
+        $data = $this->driverService->make_active_inactive($request->online_status);
 
         return $this->successResponse(
             $data,
-            'dataFetchedSuccessfully'
+            'dataUpdatedSuccessfully'
         );
     }
 
