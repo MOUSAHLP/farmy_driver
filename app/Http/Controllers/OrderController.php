@@ -82,32 +82,7 @@ class OrderController extends Controller
         }
     }
 
-    public function deliverOrderByDriver($order_id)
-    {
-        $order = Order::find($order_id);
-        if (!$order) {
-            return $this->errorResponse(
-                "orders.NotFound",
-                404
-            );
-        }
-
-        $res = $this->orderService->deliverOrderByDriver($order);
-
-        if ($res) {
-            $data["order_total"] = $order->total;
-            return $this->successResponse(
-                $data,
-                'orders.Delivered'
-            );
-        } else {
-            return $this->errorResponse(
-                "orders.OtherDriver",
-                400
-            );
-        }
-    }
-
+    deliverOrderByDriver
     public function makeOrderPaid($order_id)
     {
         $order = Order::find($order_id);
