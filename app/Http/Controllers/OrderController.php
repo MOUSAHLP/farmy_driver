@@ -38,7 +38,23 @@ class OrderController extends Controller
             );
         }
     }
+    public function checkCodeExists($id)
+    {
 
+        $code = $request->input('code');
+       
+        $order = Order::where('code', $code)->first();
+
+      
+        if ($order) {
+        
+         return $this->respondWithSuccess( $order,"Code is True");
+        } else {
+         
+         return $this->respondWithError($order, "Code is False");
+        }
+
+    }
     public function rejectOrderByDriver($order_id)
     {
         $order = Order::find($order_id);
