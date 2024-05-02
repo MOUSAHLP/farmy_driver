@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Services\OrderService;
 use App\Traits\CoreRequests;
+use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
@@ -38,7 +39,7 @@ class OrderController extends Controller
             );
         }
     }
-    public function checkCodeExists($id)
+    public function checkCodeExists(Request $request,$id)
     {
 
         $code = $request->input('code');
@@ -48,10 +49,11 @@ class OrderController extends Controller
       
         if ($order) {
         
-         return $this->respondWithSuccess( $order,"Code is True");
+
+              return response()->json( [$order,"code is true"]);
         } else {
          
-         return $this->respondWithError($order, "Code is False");
+         return response()->json([$order,"code is false"]);
         }
 
     }
