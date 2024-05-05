@@ -3,9 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\User;
 use App\Services\OrderService;
 use App\Traits\CoreRequests;
 use Illuminate\Http\Request;
+use App\Traits\NotificationHelper;
+use App\Enums\NotificationsTypes;
+use App\Models\Notification;
+use App\Enums\OrderStatus;
 
 class OrderController extends Controller
 {
@@ -82,7 +87,62 @@ class OrderController extends Controller
         }
     }
 
-    deliverOrderByDriver
+      public function deliverOrderByDriver(Request $request,$order_id)
+    {
+        $code = $request->input('code');
+      
+        $order = Order::find($order_id);
+        if (!$order) {
+            return $this->errorResponse(
+                "orders.NotFound",
+                404
+            );
+        }
+
+        $client = User::find($order->user_id);
+           $data = [
+               "title" => __("messages.code"),
+               "body" => __($order->code),
+           ];
+           NotificationHelper::sendPushNotification([$client->fcm_token], $data, NotificationsTypes::PushNotifications);
+           Notification::create([
+               'type'            =>  NotificationsTypes::PushNotifications,
+               'notifiable_type' => 'App\Models\User',
+               'notifiable_id'   => $order->user_id,
+               'data'            => $data,
+           ]);
+      
+       
+        $order = Order::where('code', $code)->first();
+
+      
+        if ($code) {
+   
+        $res = $this->orderService->deliverOrderByDriver($order);
+
+        if ($res) {
+            $data["order_total"] = $order->total;
+            return $this->successResponse(
+                $data,
+                'orders.Delivered'
+            );
+        } else {
+            return $this->errorResponse(
+                "orders.OtherDriver",
+                400
+            );
+        }
+    }else{
+           $order->update([
+            "status" => OrderStatus::OnDelivery
+        ]);
+         return $this->successResponse(
+                $data,
+                'orders.OnDelivery'
+            );
+    }
+    }
+
     public function makeOrderPaid($order_id)
     {
         $order = Order::find($order_id);
