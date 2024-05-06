@@ -12,6 +12,7 @@ use App\Enums\NotificationsTypes;
 use App\Models\Notification;
 use App\Enums\OrderStatus;
 
+
 class OrderController extends Controller
 {
     use CoreRequests;
@@ -89,8 +90,9 @@ class OrderController extends Controller
 
       public function deliverOrderByDriver(Request $request,$order_id)
     {
+        
         $code = $request->input('code');
-      
+   
         $order = Order::find($order_id);
         if (!$order) {
             return $this->errorResponse(
@@ -98,11 +100,15 @@ class OrderController extends Controller
                 404
             );
         }
-
-        $client = User::find($order->user_id);
+      if (empty($code))  {
+   
+               $order = Order::find($order_id);
+                $client = User::find($order->user_id);
            $data = [
-               "title" => __("messages.code"),
-               "body" => __($order->code),
+               "title" => __("messages.orders.OrderOnWay.title"),
+               "body" =>   $order->code ,
+               "order_id" =>   $order->id,
+               'status' => $order->status,
            ];
            NotificationHelper::sendPushNotification([$client->fcm_token], $data, NotificationsTypes::PushNotifications);
            Notification::create([
@@ -110,17 +116,37 @@ class OrderController extends Controller
                'notifiable_type' => 'App\Models\User',
                'notifiable_id'   => $order->user_id,
                'data'            => $data,
+         
            ]);
-      
-       
+           $order->update([
+            "status" => OrderStatus::OnDelivery
+        ]);
+    return $this->successResponse(
+                $data,
+                'orders.OnDelivery'
+            );
+    }
         $order = Order::where('code', $code)->first();
 
-      
-        if ($code) {
+        if ($order) {
+            
    
         $res = $this->orderService->deliverOrderByDriver($order);
 
         if ($res) {
+             $order = Order::find($order_id);
+                $client = User::find($order->user_id);
+        //   $data = [
+        //       "title" => __("messages.orders.OrderOnWay.title"),
+        //       "body" => __($order->code),
+        //   ];
+        //   NotificationHelper::sendPushNotification([$client->fcm_token], $data, NotificationsTypes::PushNotifications);
+        //   Notification::create([
+        //       'type'            =>  NotificationsTypes::PushNotifications,
+        //       'notifiable_type' => 'App\Models\User',
+        //       'notifiable_id'   => $order->user_id,
+        //       'data'            => $data,
+        //   ]);
             $data["order_total"] = $order->total;
             return $this->successResponse(
                 $data,
@@ -132,14 +158,13 @@ class OrderController extends Controller
                 400
             );
         }
-    }else{
-           $order->update([
-            "status" => OrderStatus::OnDelivery
-        ]);
-         return $this->successResponse(
-                $data,
-                'orders.OnDelivery'
-            );
+    }
+
+   else{
+        return $this->errorResponse(
+            "CodeError",
+            400
+        );  
     }
     }
 
