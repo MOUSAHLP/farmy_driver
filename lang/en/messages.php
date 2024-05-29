@@ -95,4 +95,5 @@ return [
         "order_created"  => "for creating an order",
 
     ],
+    'code'=>'Your Driver is on road this your Order Code',
 ];

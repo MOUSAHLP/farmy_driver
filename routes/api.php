@@ -43,6 +43,7 @@ Route::group(['middleware' => 'lang'], function () {
 
         // Orders Actions
         Route::get('/accept-order/{order_id}', [OrderController::class, 'acceptOrderByDriver']);
+        Route::get('/checkCodeExists/{id}', [OrderController::class, 'checkCodeExists']);
         Route::get('/reject-order/{order_id}', [OrderController::class, 'rejectOrderByDriver']);
         Route::get('/deliver-order/{order_id}', [OrderController::class, 'deliverOrderByDriver']);
         Route::get('/accept-assigned-order/{order_id}', [OrderController::class, 'acceptAssignedOrderByDriver']);

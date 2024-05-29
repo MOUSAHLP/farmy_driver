@@ -13,6 +13,7 @@ class Order extends Model
         'order_number',
         'user_id',
         'driver_id',
+        'code',
         'status',
         'delivery_method_id',
         'payment_method_id',
