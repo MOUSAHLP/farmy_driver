@@ -12,7 +12,7 @@ use App\Enums\NotificationsTypes;
 use App\Models\Notification;
 use App\Enums\OrderStatus;
 
-class OrderController extends Controller
+class OrderDetailController extends Controller
 {
     use CoreRequests;
     public function __construct(private OrderService $orderService)
@@ -48,16 +48,16 @@ class OrderController extends Controller
     {
 
         $code = $request->input('code');
-       
+
         $order = Order::where('code', $code)->first();
 
-      
+
         if ($order) {
-        
+
 
               return response()->json( [$order,"code is true"]);
         } else {
-         
+
          return response()->json([$order,"code is false"]);
         }
 
@@ -89,9 +89,9 @@ class OrderController extends Controller
 
       public function deliverOrderByDriver(Request $request,$order_id)
     {
-        
+
         $code = $request->input('code');
-   
+
         $order = Order::find($order_id);
         if (!$order) {
             return $this->errorResponse(
@@ -100,7 +100,7 @@ class OrderController extends Controller
             );
         }
       if (empty($code))  {
-   
+
                $order = Order::find($order_id);
                 $client = User::find($order->user_id);
            $data = [
@@ -125,8 +125,8 @@ class OrderController extends Controller
         $order = Order::where('code', $code)->first();
 
         if ($order) {
-            
-   
+
+
         $res = $this->orderService->deliverOrderByDriver($order);
 
         if ($res) {
@@ -160,7 +160,7 @@ class OrderController extends Controller
         return $this->errorResponse(
             "CodeError",
             400
-        );  
+        );
     }
     }
 
