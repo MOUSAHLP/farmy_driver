@@ -14,6 +14,8 @@ Route::group(['middleware' => 'lang'], function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/register', [AuthController::class, 'register']);
 
+    Route::get('/generate-pdf-all-orders', [DriverController::class, 'generatePdfAllOrdersForDriver']);
+
     Route::group(['middleware' => 'auth:api'], function () {
 
         //auth
@@ -27,7 +29,6 @@ Route::group(['middleware' => 'lang'], function () {
 
 
         Route::get('/driver-dues', [DriverController::class, 'getDriverDues']);
-        Route::get('/generate-pdf-all-orders', [DriverController::class, 'generatePdfAllOrdersForDriver']);
 
         // Home Page
         Route::get('/get_home', [DriverController::class, 'getHomePage']);
