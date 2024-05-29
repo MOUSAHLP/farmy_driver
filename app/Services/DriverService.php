@@ -60,14 +60,14 @@ class DriverService
     }
     public function generatePdfAllOrdersForDriver()
     {
-        $driver = AuthHelper::userAuth();
+        // $driver = AuthHelper::userAuth();
 
         $data["orders"] = $this->getAllOrders();
         $pdf = Pdf::loadView('invoice', $data);
 
         $now = Carbon::now()->format("Y_m_d_h_i_s");
 
-        return $pdf->download($driver->first_name . '_' . $driver->last_name . '_' . $now . '.pdf');
+        return $pdf->download(  $now . '.pdf');
     }
 
     public function updateDriverInfo($driver_id, $data)
