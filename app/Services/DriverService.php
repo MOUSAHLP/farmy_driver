@@ -47,7 +47,14 @@ class DriverService
             return $order;
         });
 
-        return  ['driver_dues' => $dues, 'orders' => $data];
+        $driver_id = AuthHelper::userAuth()->id;
+        $pdf_url = env("APP_URL") . "/api/generate-pdf-all-orders/" . $driver_id;
+
+        return  [
+            'driver_dues' => $dues,
+            'orders' => $data,
+            'pdf_url' => $pdf_url,
+        ];
     }
     public function calculateDriverDues($driver_id, $delivery_fee_sum)
     {
@@ -58,16 +65,19 @@ class DriverService
             return $delivery_fee_sum * $driver_type["value"] / 100;
         }
     }
-    public function generatePdfAllOrdersForDriver()
+    public function generatePdfAllOrdersForDriver($id)
     {
-        // $driver = AuthHelper::userAuth();
+        $driver_id = Driver::find($id)->id;
 
-        $data["orders"] = $this->getAllOrders();
+        $data["orders"] =  OrderResource::collection(Order::where("driver_id", $driver_id)
+            ->where('status', OrderStatus::Deliverd)
+            ->orderBy('created_at', 'Desc')->get());
+
         $pdf = Pdf::loadView('invoice', $data);
 
         $now = Carbon::now()->format("Y_m_d_h_i_s");
 
-        return $pdf->download(  $now . '.pdf');
+        return $pdf->download($now . '.pdf');
     }
 
     public function updateDriverInfo($driver_id, $data)
@@ -223,9 +233,13 @@ class DriverService
             $weekData = $this->calculateWeekHistory($date);
         }
 
+        $driver_id = AuthHelper::userAuth()->id;
+        $pdf_url = env("APP_URL") . "/api/generate-pdf-all-orders/" . $driver_id;
+
         return array_merge(isset($weekData) ? $weekData : [], isset($monthData) ? $monthData : [], [
             'orders_count' => $ordersCount,
-            "driver_orders" => OrderResource::collection($driverOrders)
+            "driver_orders" => OrderResource::collection($driverOrders),
+            "pdf_url" => $pdf_url
         ]);
     }
 }

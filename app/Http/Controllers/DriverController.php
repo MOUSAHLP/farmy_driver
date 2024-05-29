@@ -33,10 +33,18 @@ class DriverController extends Controller
             'dataFetchedSuccessfully'
         );
     }
-
-    public function generatePdfAllOrdersForDriver()
+    public function getGeneratePdfAllOrdersForDriverUrl()
     {
-        $pdf = $this->driverService->generatePdfAllOrdersForDriver();
+        $driver_id = AuthHelper::userAuth()->id;
+        return $this->successResponse(
+            env("APP_URL")."/api/generate-pdf-all-orders/".$driver_id,
+            'dataFetchedSuccessfully'
+        );
+    }
+
+    public function generatePdfAllOrdersForDriver($id)
+    {
+        $pdf = $this->driverService->generatePdfAllOrdersForDriver($id);
         return $pdf;
     }
 
