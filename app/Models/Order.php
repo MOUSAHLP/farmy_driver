@@ -27,6 +27,7 @@ class Order extends Model
         'coupon_discount',
         'tax',
         'delivery_fee',
+        'extra_discount',
         'sub_total',
         'total',
         'date',

@@ -12,7 +12,8 @@ class SettingController extends Controller
     public function getAppSettings()
     {
 
-        $settings = Setting::get(["id", "baseUrl", "version", "phone"])->first();
+        $settings = Setting::get(["id", "version", "phone"])->first();
+        $settings->baseUrl = env("APP_URL");
         $settings->update_time = config('constant.update_time');
         $settings->tracking_time = config('constant.tracking_time');
         return $this->successResponse(

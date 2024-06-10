@@ -30,8 +30,10 @@ class OrderDetailService
 
         return new OrderDetailResource($orders);
     }
-    public function updateDriverOrderDetail($order, $request)
+    public function updateDriverOrderDetail($order_id, $request)
     {
+        $order = Order::find( $order_id);
+
         OrderDetail::whereIn("id", $request->approved_products_ids)
             ->update([
                 "status" => 1

@@ -17,7 +17,6 @@ class InvoiceHelper
     {
         $total = 0;
         $totalTax = 0;
-
         foreach ($order->orderDetails as $product) {
 
             if ($product['status']) {
@@ -37,14 +36,19 @@ class InvoiceHelper
             }
         }
 
+
+
         $total_sum = (int)($total + $totalTax + $order->delivery_fee - $order->coupon_discount);
+        $total_order = floor($total_sum / 100) * 100;
+        $extra_discount = $total_sum - $total_order;
         if ($total_sum < 0) $total_sum = 0;
+
         $data = [
             'sub_total'       => $total,
             'tax'            => $totalTax,
-            'total'          => $total_sum,
+            'extra_discount' => $extra_discount,
+            'total'          => $total_order,
         ];
-
         return $data;
     }
 }

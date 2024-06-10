@@ -6,10 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\Translatable\HasTranslations;
 
 class SubCategory extends Model implements HasMedia
 {
     use HasFactory , InteractsWithMedia;
+
+    use HasTranslations;
+    public $translatable = ['name'];
 
     protected $fillable = [
         'name',
