@@ -20,7 +20,7 @@ trait CoreRequests
             CURLOPT_HTTPHEADER => array(
                 'Accept: application/json',
                 'Content-Type: application/json',
-                'token: peaklink',
+                'lang: ' . app()->getLocale(),
             ),
         ));
 
