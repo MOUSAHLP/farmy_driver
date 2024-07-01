@@ -104,8 +104,8 @@ class OrderController extends Controller
             $order = Order::find($order_id);
             $client = User::find($order->user_id);
             $data = [
-                "title" => __("messages.orders.code.title"),
-                "body" =>   __("messages.orders.code.body") . " , " . $order->code,
+                "title" => __("messages.orders.code.title"). " " . $order->code,
+                "body" =>   __("messages.orders.code.body"),
                 "order_id" =>   $order->id,
                 'status' => $order->status,
             ];
