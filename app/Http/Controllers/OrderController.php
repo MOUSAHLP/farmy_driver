@@ -118,7 +118,7 @@ class OrderController extends Controller
 
             ]);
             $order->update([
-                "status" => OrderStatus::OnDelivery
+                "status" => OrderStatus::Deliverd
             ]);
             return $this->successResponse(
                 $data,
