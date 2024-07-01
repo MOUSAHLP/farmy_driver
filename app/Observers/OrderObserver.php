@@ -18,6 +18,7 @@ class OrderObserver
     {
         if ($order->getOriginal()["status"] != $order->status && $order->status != OrderStatus::Pending) {
             $data = [];
+            // if the new status is Confirmed
             if ($order->status == OrderStatus::Confirmed && !$order->isDirty('confirmed_at')) {
                 $data = [
                     "title" => __('messages.orders.Confirmed.title'),
@@ -25,13 +26,16 @@ class OrderObserver
                 ];
                 $order->confirmed_at = Carbon::now();
                 $order->save();
-            } else
-            if ($order->status == OrderStatus::OnDelivery) {
+            }
+            // if the new status is OnDelivery
+            else if ($order->status == OrderStatus::OnDelivery) {
                 $data = [
                     "title" => __('messages.orders.OrderOnWay.title'),
                     "body" => __('messages.orders.OrderOnWay.body'),
                 ];
-            } else if ($order->status == OrderStatus::Deliverd && !$order->isDirty('delivered_at')) {
+            }
+            // if the new status is Deliverd
+            else if ($order->status == OrderStatus::Deliverd && !$order->isDirty('delivered_at')) {
 
                 NotificationHelper::add_points_for_creating_order($order);
 

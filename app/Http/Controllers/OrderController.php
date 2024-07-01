@@ -122,7 +122,7 @@ class OrderController extends Controller
             ]);
             return $this->successResponse(
                 $data,
-                'orders.OnDelivery'
+                'orders.code'
             );
         }
         $order = Order::where('code', $code)->first();
@@ -159,7 +159,7 @@ class OrderController extends Controller
             }
         } else {
             return $this->errorResponse(
-                "CodeError",
+                "orders.codeError",
                 400
             );
         }

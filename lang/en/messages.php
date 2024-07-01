@@ -86,6 +86,9 @@ return [
             "title" => "Your Order Has Arrived",
             "body" => "The Driver Has Arrived To Your Area"
         ],
+        'code' => 'Your Driver is on road this your Order Code',
+        'codeError'=>'Invalid Code',
+
     ],
     // reward notifications
     'reward_notifications'  => [
@@ -95,5 +98,4 @@ return [
         "order_created"  => "for creating an order",
 
     ],
-    'code'=>'Your Driver is on road this your Order Code',
 ];
