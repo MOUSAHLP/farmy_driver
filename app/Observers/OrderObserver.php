@@ -37,14 +37,13 @@ class OrderObserver
             // if the new status is Deliverd
             else if ($order->status == OrderStatus::Deliverd && !$order->isDirty('delivered_at')) {
 
-                NotificationHelper::add_points_for_creating_order($order);
-
-                $data = [
-                    "title" => __('messages.orders.OrderArrived.title'),
-                    "body" => __('messages.orders.OrderArrived.body'),
-                ];
                 $order->delivered_at = Carbon::now();
                 $order->save();
+            }
+            // if the new status is Deliverd
+            else if ($order->status == OrderStatus::Done) {
+                // add point to the user because he finished an order and inform him with a notification
+                NotificationHelper::add_points_for_creating_order($order);
             }
 
             if (

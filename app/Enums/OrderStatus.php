@@ -10,6 +10,7 @@ class OrderStatus
     const Deliverd   = 4;
     const Cancelled  = 5;
     const Returned   = 6;
+    const Done       = 7;
     public static function getName($value)
     {
         $constants = array_flip((new \ReflectionClass(self::class))->getConstants());
@@ -29,6 +30,7 @@ class OrderStatus
             self::Deliverd,
             self::Cancelled,
             self::Returned,
+            self::Done,
         ];
     }
 }

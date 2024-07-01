@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Enums\NotificationsTypes;
 use App\Enums\RewardRoutes;
+use App\Models\Notification;
 use App\Models\User;
 use App\Traits\RewardRequests;
 
@@ -125,5 +126,11 @@ class NotificationHelper
         $data = NotificationHelper::getTranslatedData((int) floor($order->total / 1000), "order_created");
 
         NotificationHelper::sendPushNotification([$fcm_token], $data, NotificationsTypes::Offers);
+        Notification::create([
+            'type'            =>  NotificationsTypes::Offers,
+            'notifiable_type' => 'App\Models\User',
+            'notifiable_id'   => $order->user_id,
+            'data'            => $data,
+        ]);
     }
 }
