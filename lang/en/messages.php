@@ -86,8 +86,12 @@ return [
             "title" => "Your Order Has Arrived",
             "body" => "The Driver Has Arrived To Your Area"
         ],
-        'code' => 'Your Driver is on road this your Order Code',
-        'codeError'=>'Invalid Code',
+
+        "code" => [
+            'title' => 'Your Driver is on road this your Order Code',
+            'body' => 'Before giving the code to the driver, check the products and determine whether you would like to return them from the application',
+            'error'=>'Invalid Code',
+        ],
 
     ],
     // reward notifications
