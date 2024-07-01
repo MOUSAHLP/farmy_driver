@@ -37,7 +37,7 @@ Route::group(['middleware' => 'lang'], function () {
 
         Route::get('/driver-orders', [OrderDetailController::class, 'getDriverOrders']);
         Route::get('/driver-orders/{order_id}',  [OrderDetailController::class, 'getDriverOrderDetail']);
-        Route::put('/driver-orders/{order_id}', [OrderDetailController::class, 'updateDriverOrderDetail']);
+        Route::post('/driver-orders/{order_id}', [OrderDetailController::class, 'updateDriverOrderDetail']);
 
         Route::get('/all-orders', [DriverController::class, 'getAllOrders']);
 
