@@ -67,7 +67,7 @@ return [
         // Confirmed
         "Confirmed" => [
             "title" => "Your Order Has Confirmed",
-            "body" => "Your Order Has Confirmed By A Driver"
+            "body" => "Your Order Has Confirmed By A Driver And We Will Start Preparing Your Order"
         ],
 
         // make paid
@@ -90,7 +90,7 @@ return [
         "code" => [
             'title' => 'Your Driver is nearby , your Order Code:',
             'body' => 'Before giving the code to the driver, check the products and determine whether you would like to return them from the application',
-            'error'=>'Invalid Code',
+            'error' => 'Invalid Code',
         ],
 
     ],
