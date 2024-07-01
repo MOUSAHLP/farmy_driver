@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Enums\Taxes;
 use App\Traits\ModelHelper;
 use App\Models\Product;
 
@@ -16,7 +17,6 @@ class InvoiceHelper
     public static function calculateInvoice($order)
     {
         $total = 0;
-        $totalTax = 0;
         foreach ($order->orderDetails as $product) {
 
             if ($product['status']) {
@@ -30,13 +30,20 @@ class InvoiceHelper
 
                 $total = $total + $productTotal;
 
-                $taxPercentage = $currentProduct->tax ?? 0;
-                $productTax = ($taxPercentage / 100) * $productTotal;
-                $totalTax = $totalTax + $productTax;
+                // $taxPercentage = $currentProduct->tax ?? 0;
+                // $productTax = ($taxPercentage / 100) * $productTotal;
+                // $totalTax = $totalTax + $productTax;
             }
         }
 
-
+        // calculate the taxes
+        $taxes = collect(Taxes::calculateTaxes($total + $order->delivery_fee))->map(function ($tax) {
+            return [
+                'id' => $tax['id'],
+                'tax_value' => $tax['tax_value']
+            ];
+        })->all();
+        $totalTax = Taxes::calculateTotalTax($total + $order->delivery_fee);
 
         $total_sum = (int)($total + $totalTax + $order->delivery_fee - $order->coupon_discount);
         $total_order = floor($total_sum / 100) * 100;
@@ -44,7 +51,8 @@ class InvoiceHelper
         if ($total_sum < 0) $total_sum = 0;
 
         $data = [
-            'sub_total'       => $total,
+            'sub_total'      => $total,
+            'taxes'          => $taxes,
             'tax'            => $totalTax,
             'extra_discount' => $extra_discount,
             'total'          => $total_order,
