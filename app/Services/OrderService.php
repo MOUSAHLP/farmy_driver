@@ -73,7 +73,7 @@ class OrderService
     public function makeOrderPaid($order)
     {
 
-        if ($order->payment_status == 1) {
+        if ($order->payment_status != 1) {
 
             $order->payment_status = 1;
             $order->status =  OrderStatus::Done;
