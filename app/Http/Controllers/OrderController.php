@@ -11,7 +11,7 @@ use App\Traits\NotificationHelper;
 use App\Enums\NotificationsTypes;
 use App\Models\Notification;
 use App\Enums\OrderStatus;
-
+use App\Helpers\AuthHelper;
 
 class OrderController extends Controller
 {
@@ -104,7 +104,7 @@ class OrderController extends Controller
             $order = Order::find($order_id);
             $client = User::find($order->user_id);
             $data = [
-                "title" => __("messages.orders.code.title"). " " . $order->code,
+                "title" => __("messages.orders.code.title") . " " . $order->code,
                 "body" =>   __("messages.orders.code.body"),
                 "order_id" =>   $order->id,
                 'status' => $order->status,
@@ -129,23 +129,12 @@ class OrderController extends Controller
 
         if ($order) {
 
+            $driver_id = AuthHelper::userAuth()->id;
 
-            $res = $this->orderService->deliverOrderByDriver($order);
-
-            if ($res) {
+            if ($order->driver_id == $driver_id) {
                 $order = Order::find($order_id);
                 $client = User::find($order->user_id);
-                //   $data = [
-                //       "title" => __("messages.orders.OrderOnWay.title"),
-                //       "body" => __($order->code),
-                //   ];
-                //   NotificationHelper::sendPushNotification([$client->fcm_token], $data, NotificationsTypes::PushNotifications);
-                //   Notification::create([
-                //       'type'            =>  NotificationsTypes::PushNotifications,
-                //       'notifiable_type' => 'App\Models\User',
-                //       'notifiable_id'   => $order->user_id,
-                //       'data'            => $data,
-                //   ]);
+
                 $data["order_total"] = $order->total;
                 return $this->successResponse(
                     $data,

@@ -72,11 +72,11 @@ class OrderService
     }
     public function makeOrderPaid($order)
     {
-        $driver_id = AuthHelper::userAuth()->id;
 
         if ($order->payment_status == 1) {
 
             $order->payment_status = 1;
+            $order->status =  OrderStatus::Done;
             $order->save();
             $this->decreaseProductsQuantity($order);
             return  true;
