@@ -104,7 +104,7 @@ class OrderController extends Controller
             $order = Order::find($order_id);
             $client = User::find($order->user_id);
             $data = [
-                "title" => __("messages.orders.OrderOnWay.title"),
+                "title" => __("messages.orders.code"),
                 "body" =>   $order->code,
                 "order_id" =>   $order->id,
                 'status' => $order->status,
@@ -122,7 +122,7 @@ class OrderController extends Controller
             ]);
             return $this->successResponse(
                 $data,
-                'orders.code'
+                'orders.OnDelivery'
             );
         }
         $order = Order::where('code', $code)->first();
