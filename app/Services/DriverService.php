@@ -14,6 +14,7 @@ use App\Http\Resources\OrderDetailResource;
 use App\Models\OrderDriverAcceptance;
 use App\Models\Rank;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use PDF;
 
 
@@ -142,13 +143,25 @@ class DriverService
             ->orderBy('created_at', 'Desc')
             ->with('userAddress')
             ->get()
+            ->filter(function ($model) {
+                if (
+                    $model->created_at->format('Y-m-d') == Carbon::today()->format('Y-m-d') &&
+                    Carbon::parse($model->start_time)->format('H i s') >= Carbon::now()->format('H i s')
+                ) {
+                    return false;
+                }
+                return true;
+            })
+            ->values()
             ->map(function ($model) {
                 $model->priority = Rank::getUserCurrentRank($model->user_id)->features["priority"];
+                // dump($model->priority);
                 return $model;
             })->sortBy(function ($model) {
                 return $model->priority;
             })->values()
-            ->take(5);
+            // ->take(5)
+        ;
 
         return OrderResource::collection($orders);
     }
