@@ -37,6 +37,7 @@ class OrderDetailResource extends JsonResource
             'coupon_discount' => $this->coupon_discount,
             'tax' => (int) $this->tax,
             'delivery_fee' => (int) $this->delivery_fee,
+            'extra_discount' => (int)  $this->extra_discount,
             'sub_total' => (int)  $this->sub_total,
             'total' => (int) $this->total,
             'notes' => $this->notes,
