@@ -36,7 +36,7 @@ class DriverService
         $delivery_fee = Order::where([['driver_id', $driver_id]])->sum('delivery_fee');
         $dues = $this->calculateDriverDues($driver_id, $delivery_fee);
 
-        $orders = Order::where([['driver_id', $driver_id], ['status', OrderStatus::Deliverd]])
+        $orders = Order::where([['driver_id', $driver_id], ['status', OrderStatus::Done]])
             ->orderBy('created_at', 'Desc')
             ->take(5)
             ->select('order_number', 'created_at', 'total')->get();
@@ -70,7 +70,7 @@ class DriverService
         $driver_id = Driver::find($id)->id;
 
         $data["orders"] =  OrderResource::collection(Order::where("driver_id", $driver_id)
-            ->where('status', OrderStatus::Deliverd)
+            ->where('status', OrderStatus::Done)
             ->orderBy('created_at', 'Desc')->get());
 
         $pdf = Pdf::loadView('invoice', $data);
@@ -103,7 +103,7 @@ class DriverService
     {
         $driver_id = AuthHelper::userAuth()->id;
         $orders = Order::where("driver_id", $driver_id)
-            ->where('status', OrderStatus::Deliverd)
+            ->where('status', OrderStatus::Done)
             ->orderBy('created_at', 'Desc')->get();
 
         return OrderResource::collection($orders);
@@ -179,7 +179,7 @@ class DriverService
 
         for ($i = 0; $i < 7; $i++) {
             $weekData[$now->minDayName] = Order::where('driver_id', $driver_id)
-                ->where('status', OrderStatus::Deliverd)
+                ->where('status', OrderStatus::Done)
                 ->whereDate('date', $now->format("Y-m-d"))
                 ->count();
 
@@ -199,7 +199,7 @@ class DriverService
         for ($i = $lastDay->daysInMonth; $i > 0; $i--) {
 
             $monthData[$i] = Order::where('driver_id', $driver_id)
-                ->where('status', OrderStatus::Deliverd)
+                ->where('status', OrderStatus::Done)
                 ->whereDate('date', ">=", $firstDay->format("Y-m-d"))
                 ->whereDate('date', "<=", $lastDay->format("Y-m-d"))
                 ->whereDate('date', $lastDay->format("Y-m-d"))
@@ -220,7 +220,7 @@ class DriverService
 
         $ordersCount = $query->count();
 
-        $driverOrders =  $query->where('status', OrderStatus::Deliverd)
+        $driverOrders =  $query->where('status', OrderStatus::Done)
             ->get();
 
         $monthData = null;
